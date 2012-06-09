@@ -82,14 +82,16 @@ texture::texture(string file_path, GLfloat tex_param)
 		pixel_data = swap;
 		for (unsigned int i = 0; i < _width * _height; i++)
 		{
-			pixel_data[(i * 3)] = pixel_data_final[(i * 3)];
-			pixel_data[(i * 3) + 1] = pixel_data_final[(i * 3) + 1];
-			pixel_data[(i * 3) + 2] = pixel_data_final[(i * 3) + 2];
+			pixel_data[(i * 4)] = pixel_data_final[(i * 3)];
+			pixel_data[(i * 4) + 1] = pixel_data_final[(i * 3) + 1];
+			pixel_data[(i * 4) + 2] = pixel_data_final[(i * 3) + 2];
 
-			if (pixel_data[(i * 3)] == 255)
-				pixel_data[(i * 3) + 3] = 0;
+			if ((unsigned char)pixel_data[(i * 4)] == 255 && 
+				pixel_data[(i * 4) + 1] == 0 &&
+				pixel_data[(i * 4) + 2] == 0)
+				pixel_data[(i * 4) + 3] = 0;
 			else
-				pixel_data[(i * 3) + 3] = 255;
+				pixel_data[(i * 4) + 3] = 255;
 		}
 		delete[] pixel_data_final;
 	}
@@ -105,10 +107,7 @@ texture::texture(string file_path, GLfloat tex_param)
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, tex_param);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, tex_param);
 
-	if (bits_i == 3)
-		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, _width, _height, GL_BGR_EXT, GL_UNSIGNED_BYTE, pixel_data);
-	else if (bits_i == 4)
-		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, _width, _height, GL_BGRA_EXT, GL_UNSIGNED_BYTE, pixel_data);
+	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, _width, _height, GL_BGRA_EXT, GL_UNSIGNED_BYTE, pixel_data);
 	delete[] pixel_data;
 }
 
