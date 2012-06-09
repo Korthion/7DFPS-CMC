@@ -336,7 +336,7 @@ static void logic(int value)
 		recoil=recoil+0.3;
 		}
 	
-	else if((*weapon_current).name=="Berreta M9")
+	else if((*weapon_current).name=="Glock G18")
 		{
 		bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy, (*weapon_current).name, false, iswalking);
 		Sound.StopShotFade();	
@@ -470,9 +470,9 @@ void render(void)
 		ss3<<"Weapon: M249 Machine Gun   Rounds: Tracer";
 		}
 
-	else if ((*weapon_current).name=="Berreta M9")
+	else if ((*weapon_current).name=="Glock G18")
 		{
-		ss3<<"Weapon: Berreta M9 Sidearm";
+		ss3<<"Weapon: Glock G18 Sidearm";
 		}
 
 	else if ((*weapon_current).name=="SV-98")
@@ -510,7 +510,7 @@ void render(void)
 		hud.image(MG.getId(),-1,-0.6,1,1,zoomedIn);
 		}
 	
-	else if ((*weapon_current).name=="Berreta M9") 
+	else if ((*weapon_current).name=="Glock G18") 
 		{
 			hud.image(pistol.getId(),-1,-0.6,1,1,zoomedIn);
 		}
@@ -724,7 +724,7 @@ if (key == 'r')
 	    glutTimerFunc(5000, firerate, 1);	
 		}
 
-	else if((*weapon_current).name=="Berreta M9")
+	else if((*weapon_current).name=="Glock G18")
 		{
 		Sound.play_pistol_reload();
 		glutTimerFunc(1000, firerate, 1);
@@ -815,19 +815,17 @@ if (key == VK_TAB)
 if (fullscreen == true)
 	{
 	fullscreen = false;
-	//glutLeaveGameMode();
 
 	glutReshapeWindow(900,900);
-	glutPositionWindow(0,0);
-   // glutCreateWindow("Introduction to 3D Programming");
-	 
+	glutPositionWindow(200,0);
+    
 	}
 
 else if (fullscreen == false)
 	{
 	fullscreen = true;
 
-	//glutGameModeString("1680x1050:32@60");
+	glutGameModeString("1680x1050:32@60");
 	glutEnterGameMode(); 	
 	
 	}
@@ -917,14 +915,16 @@ int main (int argc, char **argv)
     glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
     
+	
+	
+	
+	glutInitWindowSize (900, 900);
+    glutInitWindowPosition (20, 20);
+  //  glutCreateWindow("Introduction to 3D Programming");
+
 	glutGameModeString("1680x1050:32@60");
 	glutEnterGameMode(); 
 	
-	/*Windowed parrameters:
-	glutInitWindowSize (900, 900);
-    glutInitWindowPosition (20, 20);
-    glutCreateWindow("Introduction to 3D Programming");
-	*/
 
     init();	
 
@@ -965,7 +965,7 @@ int main (int argc, char **argv)
 	weapon_MG.name = "M249";
 	weapon_pistol.magazine_cap = 12;
 	weapon_pistol.magazine_count = 12;
-	weapon_pistol.name = "Berreta M9";
+	weapon_pistol.name = "Glock G18";
 	weapon_sniper.magazine_cap = 5;
 	weapon_sniper.magazine_count = 5;
 	weapon_sniper.name = "SV-98";
