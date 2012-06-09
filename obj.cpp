@@ -1,3 +1,4 @@
+#include "__PreCompile.h"
 #include "obj.h" 
  
 #define points_per_vertex 3

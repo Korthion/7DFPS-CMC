@@ -1,3 +1,4 @@
+#include "__PreCompile.h"
 #include "bullet.h"
 
 struct vertex 

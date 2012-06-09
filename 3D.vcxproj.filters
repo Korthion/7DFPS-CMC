@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\GL">
+      <UniqueIdentifier>{388dc96c-344b-4bd8-b090-5bd3a3d4be79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -47,8 +50,28 @@
     <ClInclude Include="SoundEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GL\freeglut_ext.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\glut.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\freeglut_std.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\freeglut.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="__PreCompile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Class Diagram.cd" />
+    <None Include="irrKlang.dll" />
+    <None Include="freeglut.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="freeglut.lib" />
   </ItemGroup>
 </Project>

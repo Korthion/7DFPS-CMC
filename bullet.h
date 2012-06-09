@@ -1,7 +1,4 @@
 #include <stdio.h>
-#include <windows.h>	   
-#include <GL/gl.h>		 
-#include "glut.h"
 #include <stdlib.h>
 #include <math.h>
 #include <fstream>

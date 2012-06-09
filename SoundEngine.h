@@ -1,18 +1,13 @@
-#include <windows.h>
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include "glut.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <cmath>
-#include <irrKlang.h>
 using namespace irrklang;
 using namespace std;
 

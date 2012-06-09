@@ -1,11 +1,8 @@
-#include <windows.h>
+#include "__PreCompile.h"
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
 #include <iostream>
 #include <sstream>
 #include <fstream>

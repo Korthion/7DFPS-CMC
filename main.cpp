@@ -1,14 +1,10 @@
 //TEST2
 #include <stdio.h>
-#include <windows.h>	   
-#include <GL/gl.h>		 
-#include "glut.h"
 #include "hud.h"
 #include "obj.h"
 #include "bullet.h"
 #include "SoundEngine.h"
 #include <stdlib.h>
-#include <irrKlang.h>
 #include <math.h>
 #include <fstream>
 #include <sstream>

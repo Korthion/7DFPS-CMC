@@ -47,11 +47,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>__PreCompile.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -86,12 +86,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bullet.h" />
+    <ClInclude Include="GL\freeglut.h" />
+    <ClInclude Include="GL\freeglut_ext.h" />
+    <ClInclude Include="GL\freeglut_std.h" />
+    <ClInclude Include="GL\glut.h" />
     <ClInclude Include="hud.h" />
     <ClInclude Include="obj.h" />
     <ClInclude Include="SoundEngine.h" />
+    <ClInclude Include="__PreCompile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Class Diagram.cd" />
+    <None Include="freeglut.dll" />
+    <None Include="irrKlang.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="freeglut.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
