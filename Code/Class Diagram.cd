@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="bullet">
+    <Position X="4" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ZACAEAAAAQEEAABCAAIAACAACAAAAQAAARAgEAAAAAA=</HashCode>
+      <FileName>bullet.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HUD">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAACAAEAAEAAAAkACAAAAAAAAAAg=</HashCode>
+      <FileName>hud.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model">
+    <Position X="6" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAQgAAAAAAgAhAIAAAAAAAAAAAAAgAAAAgAwBAAAAA=</HashCode>
+      <FileName>obj.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SoundEngine">
+    <Position X="8.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>QQACBBSIUiIIEAARCACCxFCAAcAQAABIACmQFAQQwAA=</HashCode>
+      <FileName>SoundEngine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="vertex">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAQAAAAA=</HashCode>
+      <FileName>bullet.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="gun">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>main.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
