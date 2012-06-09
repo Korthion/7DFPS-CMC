@@ -825,8 +825,10 @@ else if (fullscreen == false)
 	{
 	fullscreen = true;
 
+
 	glutGameModeString("1680x1050:32@60");
 	glutEnterGameMode(); 	
+	
 	
 	}
 
@@ -963,8 +965,8 @@ int main (int argc, char **argv)
 	weapon_MG.magazine_cap = 100;
 	weapon_MG.magazine_count = 100;
 	weapon_MG.name = "M249";
-	weapon_pistol.magazine_cap = 12;
-	weapon_pistol.magazine_count = 12;
+	weapon_pistol.magazine_cap = 20;
+	weapon_pistol.magazine_count = 20;
 	weapon_pistol.name = "Glock G18";
 	weapon_sniper.magazine_cap = 5;
 	weapon_sniper.magazine_count = 5;
