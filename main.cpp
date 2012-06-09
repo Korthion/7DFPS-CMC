@@ -1,4 +1,3 @@
-//TEST2
 #include <stdio.h>
 #include "hud.h"
 #include "obj.h"
@@ -19,10 +18,11 @@ const float PI = 3.141592654;
 float positionz[50], positionx[50];
 bool firstMouseButton = false;
 int bulletcount = 0;
-bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true; 
+bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true, glock_auto = false;
 int winW = 0, winH = 0, Sensitivity = 6;
 int startTime, prevTime;
 float angle=0, bullet_time_const = 1;
+int glock_firerate = 200;
 texture targetTexture, groundTexture, wallTexture, skyTexture, MG, pistol, scope;
 SoundEngine Sound;
 HUD hud;
@@ -342,8 +342,8 @@ static void logic(int value)
 		Sound.StopShotFade();	
 		Sound.playShotPistol();
 
-		glutTimerFunc(200, shotfade, 0);
-		glutTimerFunc(250*bullet_time_const, firerate, 0);	
+		glutTimerFunc(glock_firerate, shotfade, 0);
+		glutTimerFunc(glock_firerate*bullet_time_const, firerate, 0);	
 
 		if (accuracy<0.050)
 			{accuracy=accuracy+0.017;}
@@ -572,6 +572,20 @@ if (key == 'q')
 			{tracers = true;}
 		else 
 			{tracers = false;}
+		}
+
+	if  ((*weapon_current).name=="Glock G18")
+		{
+		if (glock_auto == false)
+			{
+			glock_auto = true;
+			glock_firerate = 55;
+			}
+		else
+			{
+			glock_auto = false;
+			glock_firerate = 200;
+			}
 		}
     }
 
@@ -815,20 +829,21 @@ if (key == VK_TAB)
 if (fullscreen == true)
 	{
 	fullscreen = false;
-
+	
+	
 	glutReshapeWindow(900,900);
-	glutPositionWindow(200,0);
-    
+	glutPositionWindow(800,0);
+
 	}
 
 else if (fullscreen == false)
 	{
 	fullscreen = true;
 
-
-	glutGameModeString("1680x1050:32@60");
-	glutEnterGameMode(); 	
 	
+	glutReshapeWindow(1680,1050);
+	glutPositionWindow(0,0);
+	glutFullScreen();
 	
 	}
 
@@ -922,7 +937,7 @@ int main (int argc, char **argv)
 	
 	glutInitWindowSize (900, 900);
     glutInitWindowPosition (20, 20);
-  //  glutCreateWindow("Introduction to 3D Programming");
+    //glutCreateWindow("Introduction to 3D Programming");
 
 	glutGameModeString("1680x1050:32@60");
 	glutEnterGameMode(); 
@@ -933,15 +948,15 @@ int main (int argc, char **argv)
     glutDisplayFunc(render);
     glutReshapeFunc(reshape);
 
-    glutPassiveMotionFunc(mouseMovement); //mouse movement
+    glutPassiveMotionFunc(mouseMovement); // mouse movement
 	glutMotionFunc(mouseMovement); // to fix mouseclick locks
 	glutMouseFunc(processMouse);
     glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keybup);
 	glutSetCursor(GLUT_CURSOR_NONE);
 	
-	obj[0].Load("house.obj",0,-5,0);	 //loads the house object
-	obj[1].Load("MG2.obj",0,-12,0);	     //loads the turret object
+	obj[0].Load("house.obj",0,-5,0);	 // loads the house object
+	obj[1].Load("MG2.obj",0,-12,0);	     // loads the turret object
 
 	Sound.playAmbient();
 	Sound.playWalk();
@@ -965,8 +980,8 @@ int main (int argc, char **argv)
 	weapon_MG.magazine_cap = 100;
 	weapon_MG.magazine_count = 100;
 	weapon_MG.name = "M249";
-	weapon_pistol.magazine_cap = 20;
-	weapon_pistol.magazine_count = 20;
+	weapon_pistol.magazine_cap = 14;
+	weapon_pistol.magazine_count = 14;
 	weapon_pistol.name = "Glock G18";
 	weapon_sniper.magazine_cap = 5;
 	weapon_sniper.magazine_count = 5;
