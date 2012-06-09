@@ -345,10 +345,22 @@ static void logic(int value)
 		glutTimerFunc(glock_firerate, shotfade, 0);
 		glutTimerFunc(glock_firerate*bullet_time_const, firerate, 0);	
 
-		if (accuracy<0.050)
-			{accuracy=accuracy+0.017;}
 
-		recoil=recoil+0.5;
+
+		if (glock_auto == false)
+			{
+			if (accuracy<0.040)
+				{accuracy=accuracy+0.015;}
+
+			recoil=recoil+0.5;
+			}
+		else if (glock_auto == true)
+			{
+			if (accuracy<0.018)
+				{accuracy=accuracy+0.01;}
+
+			recoil=recoil+0.38;
+			}
 		}
 
 	else if((*weapon_current).name=="SV-98")
@@ -374,7 +386,7 @@ static void logic(int value)
 		recoil=recoil+1.0;
 		}
 
-	glutWarpPointer(lastx+recoil,lasty);
+	glutWarpPointer(lastx,lasty+recoil);
 
 	(*weapon_current).magazine_count--;
 	bulletcount++;	
@@ -472,7 +484,11 @@ void render(void)
 
 	else if ((*weapon_current).name=="Glock G18")
 		{
-		ss3<<"Weapon: Glock G18 Sidearm";
+		if (glock_auto == false)
+		ss3<<"Weapon: Glock G18 Sidearm  Mode: Semi-auto";
+
+		else
+		ss3<<"Weapon: Glock G18 Sidearm  Mode: Full-auto";
 		}
 
 	else if ((*weapon_current).name=="SV-98")
@@ -579,7 +595,7 @@ if (key == 'q')
 		if (glock_auto == false)
 			{
 			glock_auto = true;
-			glock_firerate = 55;
+			glock_firerate = 50;
 			}
 		else
 			{

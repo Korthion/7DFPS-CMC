@@ -51,6 +51,12 @@ void bullet::setCoords(float x, float y, float z, float yrotrad,
    {
     default_accuracy = 0.0015;
    }
+
+   if(weap=="Glock G18")    
+   {
+    default_accuracy = 0.004;
+   }
+
    this -> tracers=tracers;
    this -> yrotrad = yrotrad + RandomFloat(-default_accuracy - accuracy,default_accuracy + accuracy); //sets the bullet dispersion
    this -> xrotrad = xrotrad + RandomFloat(-default_accuracy - accuracy,default_accuracy + accuracy);
