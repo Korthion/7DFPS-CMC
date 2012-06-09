@@ -8,6 +8,7 @@
 #include <math.h>
 #include <fstream>
 #include <sstream>
+#include "texture.h"
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 using namespace std;
 using namespace irrklang;
@@ -22,7 +23,7 @@ bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, 
 int winW = 0, winH = 0, Sensitivity = 6;
 int startTime, prevTime;
 float angle=0, bullet_time_const = 1;
-GLuint targetTexture, groundTexture, wallTexture, skyTexture, MG, pistol, scope;
+texture targetTexture, groundTexture, wallTexture, skyTexture, MG, pistol, scope;
 SoundEngine Sound;
 HUD hud;
 Model obj[1];
@@ -123,7 +124,7 @@ void texturize()
     glEnable( GL_TEXTURE_2D );
 	glEnable(GL_NORMALIZE);
 	
-    glBindTexture( GL_TEXTURE_2D, targetTexture ); 
+	glBindTexture( GL_TEXTURE_2D, targetTexture.getId()); 
     glBegin (GL_QUADS);
 
 
@@ -134,7 +135,7 @@ void texturize()
     glEnd();
 	
 
-	glBindTexture( GL_TEXTURE_2D, groundTexture );    
+	glBindTexture( GL_TEXTURE_2D, groundTexture.getId());    
     glBegin (GL_QUADS);
 
 	glNormal3f(0.0, 1.0f, 0.0f);
@@ -144,7 +145,7 @@ void texturize()
     glTexCoord2d(0.0,40); glVertex3d(200,-5,-200);
     glEnd();
 
-    glBindTexture( GL_TEXTURE_2D, wallTexture );    
+	glBindTexture( GL_TEXTURE_2D, wallTexture.getId());    
     glBegin (GL_QUADS);
 	
 	glTexCoord2d(0.0,0.0); glVertex3d(200,-5,200); 
@@ -177,7 +178,7 @@ void drawSkybox()
 	glDisable(GL_DEPTH_TEST);	
 	glEnable( GL_TEXTURE_2D );
 
-	glBindTexture( GL_TEXTURE_2D, skyTexture);  
+	glBindTexture( GL_TEXTURE_2D, skyTexture.getId());  
 	glBegin (GL_QUADS);
 
 	glTexCoord2d(0.0,0.0); glVertex3d(300+xpos,-5,zpos+300); 
@@ -506,18 +507,18 @@ void render(void)
 
 	if ((*weapon_current).name=="M249") 
 		{
-		hud.image(MG,-1,-0.6,1,1,zoomedIn);
+		hud.image(MG.getId(),-1,-0.6,1,1,zoomedIn);
 		}
 	
 	else if ((*weapon_current).name=="Berreta M9") 
 		{
-		hud.image(pistol,-1,-0.6,1,1,zoomedIn);
+			hud.image(pistol.getId(),-1,-0.6,1,1,zoomedIn);
 		}
 	
 	else if ((*weapon_current).name=="SV-98")
 		{
 		if (zoomedIn==true)
-			hud.image(scope,-0.5,0.5,1,1,zoomedIn);
+			hud.image(scope.getId(),-0.5,0.5,1,1,zoomedIn);
 		}
    
 
@@ -909,7 +910,7 @@ int main (int argc, char **argv)
 	glutMouseFunc(processMouse);
     glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keybup);
-	glutSetCursor(GLUT_CURSOR_NONE);
+	//glutSetCursor(GLUT_CURSOR_NONE);
 
 	obj[0].Load("house.obj",0,-5,0);	 //loads the house object
 	obj[1].Load("MG2.obj",0,-12,0);	     //loads the turret object
@@ -923,13 +924,14 @@ int main (int argc, char **argv)
 
 
 	//loading of textures
-	targetTexture = hud.LoadTexture("target.bmp", 400, 400,GL_CLAMP);
-	groundTexture = hud.LoadTexture("ground2.bmp", 712, 712, GL_REPEAT);
-	wallTexture = hud.LoadTexture("brick.bmp", 512, 512,GL_REPEAT);
-	skyTexture = hud.LoadTexture("sky.bmp", 640, 320, GL_REPEAT);
-	MG = hud.LoadTexture("mg.bmp", 660, 300, GL_CLAMP);
-	pistol = hud.LoadTexture("pistol.bmp", 540, 300, GL_CLAMP);
-	scope = hud.LoadTexture("scope.bmp", 1920, 1080, GL_CLAMP);
+	
+	targetTexture = texture("target.bmp", GL_CLAMP);
+	groundTexture = texture("ground2.bmp", GL_REPEAT);
+	wallTexture = texture("brick.bmp", GL_REPEAT);
+	skyTexture = texture("sky.bmp", GL_REPEAT);
+	MG = texture("mg.bmp", GL_REPEAT);
+	pistol = texture("pistol.bmp", GL_CLAMP);
+	scope = texture("scope.bmp", GL_CLAMP);
 
 	//Setting up the weapons
 	weapon_MG.magazine_cap = 100;
