@@ -815,11 +815,11 @@ if (key == VK_TAB)
 if (fullscreen == true)
 	{
 	fullscreen = false;
-	glutLeaveGameMode();
+	//glutLeaveGameMode();
 
-	glutInitWindowSize (900, 900);
-    glutInitWindowPosition (20, 20);
-    glutCreateWindow("Introduction to 3D Programming");
+	glutReshapeWindow(900,900);
+	glutPositionWindow(0,0);
+   // glutCreateWindow("Introduction to 3D Programming");
 	 
 	}
 
@@ -827,9 +827,9 @@ else if (fullscreen == false)
 	{
 	fullscreen = true;
 
-	glutGameModeString("1680x1050:32@60");
+	//glutGameModeString("1680x1050:32@60");
 	glutEnterGameMode(); 	
-
+	
 	}
 
 }
