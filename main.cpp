@@ -19,7 +19,7 @@ const float PI = 3.141592654;
 float positionz[50], positionx[50];
 bool firstMouseButton = false;
 int bulletcount = 0;
-bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false;
+bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true; 
 int winW = 0, winH = 0, Sensitivity = 6;
 int startTime, prevTime;
 float angle=0, bullet_time_const = 1;
@@ -808,6 +808,32 @@ if (key == 't')
 		  Sound.playSpeed=1.0;
 	 }
 }
+
+if (key == VK_TAB)
+{
+
+if (fullscreen == true)
+	{
+	fullscreen = false;
+	glutLeaveGameMode();
+
+	glutInitWindowSize (900, 900);
+    glutInitWindowPosition (20, 20);
+    glutCreateWindow("Introduction to 3D Programming");
+	 
+	}
+
+else if (fullscreen == false)
+	{
+	fullscreen = true;
+
+	glutGameModeString("1680x1050:32@60");
+	glutEnterGameMode(); 	
+
+	}
+
+}
+
 }
 
 float clamp(float value, float min, float max)
@@ -890,12 +916,12 @@ int main (int argc, char **argv)
 {
     glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
-    glutGameModeString("1920x1080:32@60");
+    
+	glutGameModeString("1680x1050:32@60");
 	glutEnterGameMode(); 
 	
 	/*Windowed parrameters:
-
-    glutInitWindowSize (900, 900);
+	glutInitWindowSize (900, 900);
     glutInitWindowPosition (20, 20);
     glutCreateWindow("Introduction to 3D Programming");
 	*/
@@ -910,8 +936,8 @@ int main (int argc, char **argv)
 	glutMouseFunc(processMouse);
     glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keybup);
-	//glutSetCursor(GLUT_CURSOR_NONE);
-
+	glutSetCursor(GLUT_CURSOR_NONE);
+	
 	obj[0].Load("house.obj",0,-5,0);	 //loads the house object
 	obj[1].Load("MG2.obj",0,-12,0);	     //loads the turret object
 
