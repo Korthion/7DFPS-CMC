@@ -128,7 +128,7 @@ void bullet::draw(float target_x)
 		{
 		glutSolidSphere(0.07,11,10);
 		}
-	else if (weapon=="Berreta M9")
+	else if (weapon=="Glock G18")
 		{
 		glutSolidSphere(0.04,11,10);
 		}
