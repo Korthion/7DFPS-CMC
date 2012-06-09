@@ -1,3 +1,4 @@
+//TEST
 #include <stdio.h>
 #include <windows.h>	   
 #include <GL/gl.h>		 
