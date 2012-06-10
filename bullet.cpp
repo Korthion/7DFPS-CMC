@@ -35,7 +35,7 @@ float RandomFloat(float min, float max)
 
 void bullet::setCoords(float x, float y, float z, float yrotrad, 
 	                   float xrotrad, float accuracy, string weap, 
-					   bool tracers, bool iswalking)
+					   bool tracers, bool iswalking, bool zoomedIn)
 {    
    if (iswalking == true)   // If the player is walking, accuracy will suffer
 	   {

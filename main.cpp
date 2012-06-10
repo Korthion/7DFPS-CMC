@@ -323,7 +323,7 @@ static void logic(int value)
 		
 	if((*weapon_current).name=="M249")
 		{
-		bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy, (*weapon_current).name, tracers, iswalking);
+		bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy, (*weapon_current).name, tracers, iswalking, zoomedIn);
 		Sound.StopShotFade();	
 		Sound.playShotMG();
 
@@ -338,7 +338,7 @@ static void logic(int value)
 	
 	else if((*weapon_current).name=="Glock G18")
 		{
-		bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy, (*weapon_current).name, false, iswalking);
+		bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy, (*weapon_current).name, false, iswalking, zoomedIn);
 		Sound.StopShotFade();	
 		Sound.playShotPistol();
 
@@ -359,13 +359,16 @@ static void logic(int value)
 			if (accuracy<0.018)
 				{accuracy=accuracy+0.01;}
 
-			recoil=recoil+0.38;
+			if (zoomedIn == true)
+				{recoil=recoil+0.20;}
+			else 
+				{recoil=recoil+0.38;}
 			}
 		}
 
 	else if((*weapon_current).name=="SV-98")
 		{
-		bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy/5, (*weapon_current).name, false, iswalking);
+		bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy/5, (*weapon_current).name, false, iswalking, zoomedIn);
 		Sound.StopShotFade();	
 		Sound.playShotSniper();
 
