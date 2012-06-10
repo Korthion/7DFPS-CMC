@@ -442,8 +442,8 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 
 				else
 				{
-				xpos += float(sin(yrotrad));
-				zpos -= float(cos(yrotrad));
+				xpos += float(sin(yrotrad))*0.8;
+				zpos -= float(cos(yrotrad))*0.8;
 				}
 			}
 		
@@ -471,8 +471,8 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 
 			else
 				{
-				xpos -= float(sin(yrotrad));
-				zpos += float(cos(yrotrad));
+				xpos -= float(sin(yrotrad))*0.8;
+				zpos += float(cos(yrotrad))*0.8;
 				}
 			}
 		}
@@ -527,6 +527,17 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 				}
 
 			}
+		}
+
+	if((key_array['d'])&&(key_array['a']))
+		{
+		iswalking=false;
+		glutTimerFunc(100, stopwalk,0);
+		}
+	if((key_array['s'])&&(key_array['w']))
+		{
+		iswalking=false;
+		glutTimerFunc(100, stopwalk,0);
 		}
 
 	vertex cur_position = { xpos, ypos, zpos };	
@@ -692,118 +703,21 @@ void keyboard(unsigned char key, int x, int y)
 	
    	if (key == 'w') 
 	{	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	    key_array['w'] = true;		
 	}
 
 	if (key == 's')
 	{	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	    key_array['s'] = true;		
 	}
 
 	if (key == 'd') 
 	{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	    key_array['d'] = true;
 	}
 	
 	if (key == 'a')
-	{	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	{
 	    key_array['a'] = true;	
     }
 	
