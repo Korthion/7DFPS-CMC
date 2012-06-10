@@ -13,6 +13,9 @@ ObjectInst::ObjectInst(void)
 	tint[1] = 0.8;
 	tint[2] = 0.8;
 	tint[3] = 1.0;
+	size.x = 0;
+	size.y = 0;
+	size.z = 0;
 }
 
 ObjectInst::ObjectInst(Model* object)
@@ -27,6 +30,7 @@ ObjectInst::ObjectInst(Model* object)
 	tint[1] = 0.8;
 	tint[2] = 0.8;
 	tint[3] = 1.0;
+	size = object->size;
 }
 
 void ObjectInst::draw() const

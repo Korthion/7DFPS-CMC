@@ -10,6 +10,7 @@ private:
 	
 public:
 	vertex position;
+	vertex size;
 	float rot_x;
 	float rot_y;
 	float tint[4];
