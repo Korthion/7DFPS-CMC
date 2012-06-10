@@ -20,7 +20,7 @@ const float PI = 3.141592654;
 float positionz[50], positionx[50];
 bool firstMouseButton = false;
 int bulletcount = 0;
-bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true, glock_auto = false, show_hud = true;
+bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true, glock_auto = false, show_hud = true, reloading = false; 
 int winW = 0, winH = 0, Sensitivity = 6;
 int startTime, prevTime;
 float angle=0, bullet_time_const = 1;
@@ -69,13 +69,22 @@ void sniper_reload(int a)
    Sound.playsniper_reload();
 }
 
+void reload(int a)
+{
+reloading=false;
+
+if (a==1)
+  {
+  (*weapon_current).magazine_count=(*weapon_current).magazine_cap;
+  }
+}
+
 void firerate(int a)
 {
-    clearToShoot=true;
-	if (a==1)
-		{
-		(*weapon_current).magazine_count=(*weapon_current).magazine_cap;
-		}
+//if (reloading == false)
+clearToShoot = true; 
+
+
 }
 
 void accuracyfalloff(int a)
@@ -84,7 +93,8 @@ void accuracyfalloff(int a)
 		{
 		  accuracy=accuracy-0.002;		  
 		}
-	if(recoil>0)
+	
+	if (recoil>0)
 		{
 		recoil=recoil-0.9;
 		if (recoil <0.9)
@@ -95,6 +105,7 @@ void accuracyfalloff(int a)
 		{
 		  accuracy=0;
 		}
+
 	glutTimerFunc(50, accuracyfalloff,0);
 }
 
@@ -294,10 +305,11 @@ static void logic(int value)
 
 	g_rotation=(g_rotation_speed/1000) * elapsedTime;
 
-	if ((firstMouseButton==true)&&(clearToShoot==true)&&(*weapon_current).magazine_count>0)
+	if ((firstMouseButton==true)&&(reloading==false)&&(clearToShoot==true)&&(*weapon_current).magazine_count>0)
 {     
 
 	clearToShoot=false;
+
 	if (bulletcount==200)
 		{bulletcount=0;}	
 
@@ -746,25 +758,31 @@ if (key == '3')
 	}
 
 if (key == 'r')
+	{	
+	
+	if (reloading == false)
 	{
-	clearToShoot = false;
+	
+	reloading = true;
 
 	if ((*weapon_current).name=="M249")
-		{
+		{		
 		Sound.play_mg_reload();
-	    glutTimerFunc(5000, firerate, 1);	
+	    glutTimerFunc(5000, reload, 1);	
 		}
 
 	else if((*weapon_current).name=="Glock G18")
 		{
 		Sound.play_pistol_reload();
-		glutTimerFunc(1000, firerate, 1);
+		glutTimerFunc(1000, reload, 1);
 		}
 
 	else if((*weapon_current).name=="SV-98")
 		{
-		glutTimerFunc(2000, firerate, 1);
+		glutTimerFunc(2000, reload, 1);
 		}
+	}
+
 	}
 
 if (key == 'z')
