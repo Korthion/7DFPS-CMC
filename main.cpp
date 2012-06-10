@@ -10,6 +10,7 @@
 #include <sstream>
 #include "texture.h"
 #include "ObjectInst.h"
+#include "CollisionDetection.h"
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 using namespace std;
 using namespace irrklang;
@@ -20,7 +21,7 @@ const float PI = 3.141592654;
 float positionz[50], positionx[50];
 bool firstMouseButton = false;
 int bulletcount = 0;
-bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true, glock_auto = false, show_hud = true, reloading = false; 
+bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true, glock_auto = false, show_hud = true, reloading = false;
 int winW = 0, winH = 0, Sensitivity = 6;
 int startTime, prevTime;
 float angle=0, bullet_time_const = 1;
@@ -34,6 +35,7 @@ GLfloat intensity[] = {0.90, 0.006, 0};
 GLfloat lumi[] = {1, 1, 1, 1};
 
 ObjectInst item;
+
 
 vertex lookAt;
 
@@ -81,10 +83,7 @@ if (a==1)
 
 void firerate(int a)
 {
-//if (reloading == false)
-clearToShoot = true; 
-
-
+    clearToShoot=true;
 }
 
 void accuracyfalloff(int a)
@@ -93,8 +92,7 @@ void accuracyfalloff(int a)
 		{
 		  accuracy=accuracy-0.002;		  
 		}
-	
-	if (recoil>0)
+	if(recoil>0)
 		{
 		recoil=recoil-0.9;
 		if (recoil <0.9)
@@ -105,7 +103,6 @@ void accuracyfalloff(int a)
 		{
 		  accuracy=0;
 		}
-
 	glutTimerFunc(50, accuracyfalloff,0);
 }
 
@@ -253,7 +250,6 @@ void light (void)
 		angle=angle+0.0226;
 		}
 
-
     GLfloat DiffuseLight[] = {1, 1, 1}; 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, DiffuseLight); 
     GLfloat LightPosition[] = {xlight, 2,ylight, 1}; //set the LightPosition to the specified values
@@ -309,7 +305,6 @@ static void logic(int value)
 {     
 
 	clearToShoot=false;
-
 	if (bulletcount==200)
 		{bulletcount=0;}	
 
@@ -393,7 +388,7 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 
 	glutWarpPointer(lastx,lasty+recoil);
 
-	(*weapon_current).magazine_count--;
+	weapon_current->magazine_count--;
 	bulletcount++;	
 }
 	
@@ -421,6 +416,8 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 
 	  }
     }
+
+	item.rot_y++;
 
 	glutPostRedisplay();
 	prevTime = currTime;
@@ -475,39 +472,33 @@ glPushMatrix();
 void render(void)
 {   
     glDisable(GL_DEPTH_TEST);
-	stringstream ss,ss2,ss3,ammo;
-	if (show_hud == true)
+    stringstream ss,ss2,ss3,ammo;
+		if (show_hud == true)
 	{	
-    ss <<"X: "<<xpos<<"   "<<"Y: "<<zpos;
-	ss2<<"Total bullet Count: "<<bulletcount<<"  Accuracy: "<<accuracy<<"  Recoil:"<<recoil;
-	
+		ss <<"X: "<<xpos<<"   "<<"Y: "<<zpos;
+		ss2<<"Total bullet Count: "<<bulletcount<<"  Accuracy: "<<accuracy<<"  Recoil:"<<recoil;
 
-	if ((*weapon_current).name=="M249")
+		if ((*weapon_current).name=="M249")
 		{
-		if (tracers==false)
-		ss3<<"Weapon: M249 Machine Gun   Rounds: Subsonic anti-personnel";
-		else
-		ss3<<"Weapon: M249 Machine Gun   Rounds: Tracer";
+			if (tracers==false)
+				ss3<<"Weapon: M249 Machine Gun   Rounds: Subsonic anti-personnel";
+			else
+				ss3<<"Weapon: M249 Machine Gun   Rounds: Tracer";
 		}
-
-	else if ((*weapon_current).name=="Glock G18")
+		else if ((*weapon_current).name=="Glock G18")
 		{
-		if (glock_auto == false)
-		ss3<<"Weapon: Glock G18 Sidearm  Mode: Semi-auto";
-
-		else
-		ss3<<"Weapon: Glock G18 Sidearm  Mode: Full-auto";
+			if (glock_auto == false)
+				ss3<<"Weapon: Glock G18 Sidearm  Mode: Semi-auto";
+			else
+				ss3<<"Weapon: Glock G18 Sidearm  Mode: Full-auto";
 		}
-
-	else if ((*weapon_current).name=="SV-98")
+		else if ((*weapon_current).name=="SV-98")
 		{
-		ss3<<"Weapon: SV-98 Sniper Rifle";
+			ss3<<"Weapon: SV-98 Sniper Rifle";
 		}
-	
 	}
-
 	ammo<<(*weapon_current).magazine_count<<" / "<<(*weapon_current).magazine_cap;
-
+	
     glClearColor(1.0,1.0,1.0,1.0); 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -520,6 +511,7 @@ void render(void)
 	texturize();
 
 	item.draw();
+	CollisionDetection::drawBoxes();
 
 	draw_houses();
 
@@ -550,13 +542,17 @@ void render(void)
 		if (zoomedIn==true)
 			hud.image(scope.getId(),-0.5,0.5,1,1,zoomedIn);
 		}
-   
-	if(zoomedIn==false)
+
+	stringstream house_position;
+	house_position << "House Position: " << item.position.x  << ", " << item.position.z;
+
+    if(zoomedIn==false)
 	    {
 		hud.outputText(-0.9,0.9, ss.str(),1);
 		hud.outputText(-0.9,0.8, ss2.str(),1);
 		hud.outputText(-0.9,0.7, ss3.str(),1);
 		hud.outputText(-0.9,-0.55, ammo.str(),1);
+		hud.outputText(-0.9, -0.4, house_position.str(), 1);
 		}
 
     else if(zoomedIn==true)
@@ -564,8 +560,7 @@ void render(void)
 		hud.outputText(-0.225,0.225, ss.str(),1);
 		hud.outputText(-0.225,0.2, ss2.str(),1);
 		hud.outputText(-0.225,0.175, ss3.str(),1);
-		}	
-
+		}
 	hud.crossair(zoomedIn);			
 	
     glutSwapBuffers(); 	
@@ -617,10 +612,10 @@ if (key == 'q')
 			}
 		}
     }
-
-if (key == 'w') 
-    {	
-        iswalking = true;	
+	vertex old_position = { xpos, ypos, zpos };
+	if (key == 'w') 
+	{	
+		iswalking = true;	
 		glutTimerFunc(300, walk,0);    
 		float xrotrad, yrotrad;
 		yrotrad = (yrot / 180 * PI);
@@ -634,23 +629,23 @@ if (key == 'w')
 			{
 				if (bullet_time == true)
 				{
-			    xpos += float(sin(yrotrad))/4;
-		        zpos -= float(cos(yrotrad))/4;
+				xpos += float(sin(yrotrad))/4;
+				zpos -= float(cos(yrotrad))/4;
 				}
 
 				else
 				{
-	        	xpos += float(sin(yrotrad));
-	        	zpos -= float(cos(yrotrad));
+				xpos += float(sin(yrotrad));
+				zpos -= float(cos(yrotrad));
 				}
 			}
 		
 		//ypos -= float(sin(xrotrad));     Flying mode
 		
-    }
+	}
 
-if (key == 's')
-    {	
+	if (key == 's')
+	{	
 		iswalking = true;		
 		glutTimerFunc(300, walk,0);  
 		float xrotrad, yrotrad;
@@ -666,21 +661,21 @@ if (key == 's')
 			if (bullet_time == true)
 				{
 				xpos -= float(sin(yrotrad))/4;
-			    zpos += float(cos(yrotrad))/4;
+				zpos += float(cos(yrotrad))/4;
 				}
 
 			else
 				{
 				xpos -= float(sin(yrotrad));
-			    zpos += float(cos(yrotrad));
+				zpos += float(cos(yrotrad));
 				}
 			}
 	}
 
-if (key == 'd') 
-    {
-	    iswalking = true;		
-        glutTimerFunc(300, walk,0);  
+	if (key == 'd') 
+	{
+		iswalking = true;		
+		glutTimerFunc(300, walk,0);  
 		float yrotrad;
 		yrotrad = (yrot / 180 * PI);
 
@@ -702,10 +697,10 @@ if (key == 'd')
 				}
 
 			}
-    }
+	}
 	
-if (key == 'a')
-    {	
+	if (key == 'a')
+	{	
 	 iswalking = true;		
      glutTimerFunc(300, walk,0);  
      float yrotrad;
@@ -730,7 +725,12 @@ if (key == 'a')
 
 		}
     }
-
+	vertex cur_position = { xpos, ypos, zpos };
+	if (CollisionDetection::checkCollision(cur_position))
+	{
+		xpos = old_position.x;
+		zpos = old_position.z;
+	}
 if (key == '1')
 	{
 	weapon_current = &weapon_MG;
@@ -756,17 +756,24 @@ if (key == '3')
 	Sensitivity=6;
 	glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
 	}
+if (key == '4')
+	{
+	if(show_hud == true)
+		show_hud = false;
 
+	else
+		show_hud = true;
+	}
 if (key == 'r')
-	{	
-	
-	if (reloading == false)
+	{
+if (reloading == false)
 	{
 	
 	reloading = true;
 
+
 	if ((*weapon_current).name=="M249")
-		{		
+		{
 		Sound.play_mg_reload();
 	    glutTimerFunc(5000, reload, 1);	
 		}
@@ -784,7 +791,6 @@ if (key == 'r')
 	}
 
 	}
-
 if (key == 'z')
     {
 	if (target_x < 199)
@@ -796,14 +802,6 @@ if (key == 'x')
 	target_x -= 1 / bullet_time_const;
 	}
 
-if (key == '4')
-	{
-	if(show_hud == true)
-		show_hud = false;
-
-	else
-		show_hud = true;
-	}
 
 if (key == 27) 
 	{
@@ -1028,7 +1026,8 @@ int main (int argc, char **argv)
 	item = ObjectInst(&obj[0]);
 	item.setPosition(100, 0, 100);
 	item.setTint(0.2, 0.2, 0.8, 1.0);
-	item.rot_y = 90;
+	//item.rot_y = 90;
+	CollisionDetection::addObject(&item);
 	
 	weapon_current = &weapon_MG; // sets the curren weapon to the MG (default equipped)
 
