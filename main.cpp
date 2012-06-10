@@ -452,7 +452,7 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 	if(key_array['s'])
 		{
 		iswalking = true;		
-		glutTimerFunc(300, walk,0);  
+		glutTimerFunc(100, walk,0);  
 		float xrotrad, yrotrad;
 		yrotrad = (yrot / 180 * PI);
 		xrotrad = (xrot / 180 * PI);
@@ -479,7 +479,7 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 	if(key_array['a'])
 		{
 		 iswalking = true;		
-		 glutTimerFunc(300, walk,0);  
+		 glutTimerFunc(100, walk,0);  
 		 float yrotrad;
 		 yrotrad = (yrot / 180 * PI);
 		
@@ -505,7 +505,7 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 	if(key_array['d'])
 		{
 		iswalking = true;		
-		glutTimerFunc(300, walk,0);  
+		glutTimerFunc(100, walk,0);  
 		float yrotrad;
 		yrotrad = (yrot / 180 * PI);
 
@@ -862,7 +862,7 @@ if (key=='s')
 {
 key_array['s'] = false;
 iswalking=false;
-glutTimerFunc(300, stopwalk,0);
+glutTimerFunc(100, stopwalk,0);
 }
 
 if (key == 't')
@@ -892,6 +892,7 @@ if (key == 't')
 		  Sound.playSpeed=1.0;
 	 }
 }
+
 if (key == VK_TAB)
 {
 
