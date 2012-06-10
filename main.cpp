@@ -20,7 +20,7 @@ const float PI = 3.141592654;
 float positionz[50], positionx[50];
 bool firstMouseButton = false;
 int bulletcount = 0;
-bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true, glock_auto = false;
+bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true, glock_auto = false, show_hud = true;
 int winW = 0, winH = 0, Sensitivity = 6;
 int startTime, prevTime;
 float angle=0, bullet_time_const = 1;
@@ -463,10 +463,12 @@ glPushMatrix();
 void render(void)
 {   
     glDisable(GL_DEPTH_TEST);
-    stringstream ss,ss2,ss3,ammo;
+	stringstream ss,ss2,ss3,ammo;
+	if (show_hud == true)
+	{	
     ss <<"X: "<<xpos<<"   "<<"Y: "<<zpos;
 	ss2<<"Total bullet Count: "<<bulletcount<<"  Accuracy: "<<accuracy<<"  Recoil:"<<recoil;
-	ammo<<(*weapon_current).magazine_count<<" / "<<(*weapon_current).magazine_cap;
+	
 
 	if ((*weapon_current).name=="M249")
 		{
@@ -490,6 +492,10 @@ void render(void)
 		ss3<<"Weapon: SV-98 Sniper Rifle";
 		}
 	
+	}
+
+	ammo<<(*weapon_current).magazine_count<<" / "<<(*weapon_current).magazine_cap;
+
     glClearColor(1.0,1.0,1.0,1.0); 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -533,8 +539,7 @@ void render(void)
 			hud.image(scope.getId(),-0.5,0.5,1,1,zoomedIn);
 		}
    
-
-    if(zoomedIn==false)
+	if(zoomedIn==false)
 	    {
 		hud.outputText(-0.9,0.9, ss.str(),1);
 		hud.outputText(-0.9,0.8, ss2.str(),1);
@@ -547,7 +552,7 @@ void render(void)
 		hud.outputText(-0.225,0.225, ss.str(),1);
 		hud.outputText(-0.225,0.2, ss2.str(),1);
 		hud.outputText(-0.225,0.175, ss3.str(),1);
-		}
+		}	
 
 	hud.crossair(zoomedIn);			
 	
@@ -771,6 +776,15 @@ if (key == 'z')
 if (key == 'x')
     {	
 	target_x -= 1 / bullet_time_const;
+	}
+
+if (key == '4')
+	{
+	if(show_hud == true)
+		show_hud = false;
+
+	else
+		show_hud = true;
 	}
 
 if (key == 27) 
