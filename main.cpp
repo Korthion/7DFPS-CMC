@@ -1,3 +1,4 @@
+//TEST2
 #include <stdio.h>
 #include "hud.h"
 #include "obj.h"
@@ -8,6 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include "texture.h"
+#include "ObjectInst.h"
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 using namespace std;
 using namespace irrklang;
@@ -31,20 +33,16 @@ bullet bullets[200];
 GLfloat intensity[] = {0.90, 0.006, 0};
 GLfloat lumi[] = {1, 1, 1, 1};
 
+ObjectInst item;
 
-struct vertex 
-	{
-	float x;
-	float y;
-	float z;
-	} lookAt;
+vertex lookAt;
 
 struct gun
-	{
+{
 	string name;
 	int magazine_cap;
 	int magazine_count;
-	} weapon_MG, weapon_pistol, weapon_sniper, *weapon_current;
+} weapon_MG, weapon_pistol, weapon_sniper, *weapon_current;
 
 
 float toRad(float degrees)
@@ -54,12 +52,7 @@ float toRad(float degrees)
 
 bool collision3D(float x, float y, float z, float x1, float y1, float z1, float x2, float y2, float z2)
 {
- if ((x>=x1)&&(x<=x2)&&(z>=z1)&&(z<=z2)&&(y>=y1)&&(y<=y2))
-	 {
-	 return true;
-	 }
- 
- return false;
+	return (x>=x1)&&(x<=x2)&&(z>=z1)&&(z<=z2)&&(y>=y1)&&(y<=y2);
 }
 
 /*
@@ -343,10 +336,7 @@ static void logic(int value)
 		Sound.playShotPistol();
 
 		glutTimerFunc(glock_firerate, shotfade, 0);
-		glutTimerFunc(glock_firerate*bullet_time_const, firerate, 0);	
-
-
-
+		glutTimerFunc(glock_firerate*bullet_time_const, firerate, 0);		
 		if (glock_auto == false)
 			{
 			if (accuracy<0.040)
@@ -368,7 +358,7 @@ static void logic(int value)
 
 	else if((*weapon_current).name=="SV-98")
 		{
-		bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy/5, (*weapon_current).name, false, iswalking, zoomedIn);
+bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy/5, (*weapon_current).name, false, iswalking, zoomedIn);
 		Sound.StopShotFade();	
 		Sound.playShotSniper();
 
@@ -466,6 +456,7 @@ glPushMatrix();
 	glRotatef(180,0,1,0);
 	obj[0].Draw();		
 	glPopMatrix();
+
 	glPopMatrix();
 }
 
@@ -509,6 +500,8 @@ void render(void)
 	light();
 	glEnable(GL_DEPTH_TEST);	
 	texturize();
+
+	item.draw();
 
 	draw_houses();
 
@@ -841,7 +834,6 @@ if (key == 't')
 		  Sound.playSpeed=1.0;
 	 }
 }
-
 if (key == VK_TAB)
 {
 
@@ -869,7 +861,6 @@ else if (fullscreen == false)
 }
 
 }
-
 float clamp(float value, float min, float max)
 {
 	if(value > max) return max;
@@ -950,9 +941,6 @@ int main (int argc, char **argv)
 {
     glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
-    
-	
-	
 	
 	glutInitWindowSize (900, 900);
     glutInitWindowPosition (20, 20);
@@ -961,21 +949,20 @@ int main (int argc, char **argv)
 	glutGameModeString("1680x1050:32@60");
 	glutEnterGameMode(); 
 	
-
     init();	
 
     glutDisplayFunc(render);
     glutReshapeFunc(reshape);
 
-    glutPassiveMotionFunc(mouseMovement); // mouse movement
+    glutPassiveMotionFunc(mouseMovement); //mouse movement
 	glutMotionFunc(mouseMovement); // to fix mouseclick locks
 	glutMouseFunc(processMouse);
     glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keybup);
 	glutSetCursor(GLUT_CURSOR_NONE);
-	
-	obj[0].Load("house.obj",0,-5,0);	 // loads the house object
-	obj[1].Load("MG2.obj",0,-12,0);	     // loads the turret object
+
+	obj[0].Load("house.obj",0,-5,0);	 //loads the house object
+	obj[1].Load("MG2.obj",0,-12,0);	     //loads the turret object
 
 	Sound.playAmbient();
 	Sound.playWalk();
@@ -1005,6 +992,11 @@ int main (int argc, char **argv)
 	weapon_sniper.magazine_cap = 5;
 	weapon_sniper.magazine_count = 5;
 	weapon_sniper.name = "SV-98";
+
+	item = ObjectInst(&obj[0]);
+	item.setPosition(100, 0, 100);
+	item.setTint(0.2, 0.2, 0.8, 1.0);
+	item.rot_y = 90;
 	
 	weapon_current = &weapon_MG; // sets the curren weapon to the MG (default equipped)
 
