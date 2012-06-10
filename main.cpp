@@ -34,7 +34,7 @@ bullet bullets[200];
 GLfloat intensity[] = {0.90, 0.006, 0};
 GLfloat lumi[] = {1, 1, 1, 1};
 bool key_array[256] = { false };
-ObjectInst item;
+ObjectInst houses[7];
 
 
 vertex lookAt;
@@ -544,46 +544,10 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 
 void draw_houses()	
 {
-glPushMatrix();
-glPushMatrix();	
-	glColor3f(0.90,0.80,0.80);	 
-	glTranslated(40, 0, 50);	
-	obj[0].Draw();		
-	glPopMatrix();
+	glPushMatrix();
 
-	glPushMatrix();	 
-	glColor3f(0.85,0.85,0.85);			
-	glTranslated(-120, 0, 100);	
-	glRotatef(-45,0,1,0);
-	obj[0].Draw();		
-	glPopMatrix();
-
-	glPushMatrix();	       
-	glColor3f(0.85,0.85,0.60);	
-	glTranslated(-150, 0, 10);	
-	glRotatef(-80,0,1,0);
-	obj[0].Draw();		
-	glPopMatrix();
-
-	glPushMatrix();	                     
-	glColor3f(0.85,0.85,0.85);		 
-	glTranslated(-150, 0, -100);	
-	glRotatef(-110,0,1,0);	
-	obj[0].Draw();		
-	glPopMatrix();
-
-	glPushMatrix();	                    
-	glColor3f(0.85,0.85,0.60);			 
-	glTranslated(-60, 0, -150);	
-	glRotatef(180,0,1,0);	
-	obj[0].Draw();		
-	glPopMatrix();
-
-	glColor3f(0.90,0.80,0.80);	 
-	glTranslated(80, 0, -50);
-	glRotatef(180,0,1,0);
-	obj[0].Draw();		
-	glPopMatrix();
+	for (char i = 0; i < 6; i++)
+	houses[i].draw();
 
 	glPopMatrix();
 }
@@ -629,9 +593,6 @@ void render(void)
 	glEnable(GL_DEPTH_TEST);	
 	texturize();
 
-	item.draw();
-	CollisionDetection::drawBoxes();
-
 	draw_houses();
 
 	glPushMatrix();
@@ -661,17 +622,13 @@ void render(void)
 		if (zoomedIn==true)
 			hud.image(scope.getId(),-0.5,0.5,1,1,zoomedIn);
 		}
-
-	stringstream house_position;
-	house_position << "House Position: " << item.position.x  << ", " << item.position.z;
-
+		
     if(zoomedIn==false)
 	    {
 		hud.outputText(-0.9,0.9, ss.str(),1);
 		hud.outputText(-0.9,0.8, ss2.str(),1);
 		hud.outputText(-0.9,0.7, ss3.str(),1);
 		hud.outputText(-0.9,-0.55, ammo.str(),1);
-		hud.outputText(-0.9, -0.4, house_position.str(), 1);
 		}
 
     else if(zoomedIn==true)
@@ -735,21 +692,118 @@ void keyboard(unsigned char key, int x, int y)
 	
    	if (key == 'w') 
 	{	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	    key_array['w'] = true;		
 	}
 
 	if (key == 's')
 	{	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	    key_array['s'] = true;		
 	}
 
 	if (key == 'd') 
 	{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	    key_array['d'] = true;
 	}
 	
 	if (key == 'a')
 	{	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	    key_array['a'] = true;	
     }
 	
@@ -1054,11 +1108,47 @@ int main (int argc, char **argv)
 	weapon_sniper.magazine_count = 5;
 	weapon_sniper.name = "SV-98";
 
-	item = ObjectInst(&obj[0]);
-	item.setPosition(100, 0, 100);
-	item.setTint(0.2, 0.2, 0.8, 1.0);
-	//item.rot_y = 90;
-	CollisionDetection::addObject(&item);
+	houses[0] = ObjectInst(&obj[0]);
+	houses[0].setPosition(100, 0, 100);
+	houses[0].setTint(0.2, 0.2, 0.8, 1.0);
+	houses[0].rot_y = 0;
+	CollisionDetection::addObject(&houses[0]);
+
+	houses[1] = ObjectInst(&obj[0]);
+	houses[1].setPosition(40, 0, 50);	
+	houses[1].setTint(0.9, 0.8, 0.8, 1.0);
+	houses[1].rot_y = 0;
+	CollisionDetection::addObject(&houses[1]);
+
+	houses[2] = ObjectInst(&obj[0]);
+	houses[2].setPosition(-120, 0, 100);	
+	houses[2].setTint(0.85, 0.85, 0.85, 1.0);
+	houses[2].rot_y = 0;
+	CollisionDetection::addObject(&houses[2]);
+
+	houses[3] = ObjectInst(&obj[0]);
+	houses[3].setPosition(-150, 0, 10);	
+	houses[3].setTint(0.85, 0.85, 0.85, 1.0);
+	houses[3].rot_y = -80;
+	CollisionDetection::addObject(&houses[3]);
+
+	houses[4] = ObjectInst(&obj[0]);
+	houses[4].setPosition(-150, 0, -10);	
+	houses[4].setTint(0.85, 0.85, 0.85, 1.0);
+	houses[4].rot_y = -110;
+	CollisionDetection::addObject(&houses[4]);
+
+	houses[5] = ObjectInst(&obj[0]);
+	houses[5].setPosition(70, 0, -50);	
+	houses[5].setTint(0.85, 0.85, 0.6, 1.0);
+	houses[5].rot_y = 180;
+	CollisionDetection::addObject(&houses[5]);
+
+	houses[6] = ObjectInst(&obj[0]);
+	houses[6].setPosition(8, 0, -50);	
+	houses[6].setTint(0.9, 0.8, 0.8, 1.0);
+	houses[6].rot_y = 180;
+	CollisionDetection::addObject(&houses[6]);
 	
 	weapon_current = &weapon_MG; // sets the curren weapon to the MG (default equipped)
 
