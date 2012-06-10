@@ -262,12 +262,12 @@ void camera(void)
 {
 gluLookAt(xpos, ypos, zpos, xpos+lookAt.x, ypos+lookAt.y, zpos+lookAt.z, 0, 1, 0);
 
-if (lastx <2) //Fixes mouse getting stuck on the edges of the screen
+if (lastx <20) //Fixes mouse getting stuck on the edges of the screen
 	{
 	glutWarpPointer(lastx+360,lasty);
 	lastx+=360;	
 	}
-if (lastx >370)
+if (lastx >970)
 	{
 	glutWarpPointer(lastx-360,lasty);
 	lastx-=360;	
@@ -277,7 +277,7 @@ if (lasty>700)
 	glutWarpPointer(lastx,lasty-360);
 	lasty-=360;	
 	}
-if (lasty<2)
+if (lasty<20)
 	{	
 	glutWarpPointer(lastx,lasty+360);
 	lasty+=360;	
