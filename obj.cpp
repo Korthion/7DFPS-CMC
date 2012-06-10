@@ -6,8 +6,14 @@
 
 Model::Model()
 {
-total_connected_triangles = 0; 
-total_connected_points = 0;
+	total_connected_triangles = 0; 
+	total_connected_points = 0;
+	top_left_back.x = 0;
+	top_left_back.y = 0;
+	top_left_back.z = 0;
+	bottom_right_front.x = 0;
+	bottom_right_front.y = 0;
+	bottom_right_front.z = 0;
 }
  
 float* Model::calculate_normals( float *coord1, float *coord2, float *coord3 )
@@ -43,6 +49,15 @@ int Model::Load(char* filename, float x, float y, float z)
 	position.x = x;
 	position.y = y;
 	position.z = z;
+
+	// Set size to nothing.
+	top_left_back.x = 0;
+	top_left_back.y = 0;
+	top_left_back.z = 0;
+	bottom_right_front.x = 0;
+	bottom_right_front.y = 0;
+	bottom_right_front.z = 0;
+
 string line;
 ifstream objFile (filename);	
 if (objFile.is_open())													
@@ -66,6 +81,11 @@ if (objFile.is_open())
 			line[0] = ' ';												
 
             sscanf(line.c_str(),"%f %f %f",	&vertex_buffer[total_connected_points], &vertex_buffer[total_connected_points+1],	&vertex_buffer[total_connected_points+2]);
+			for (char i = 0; i < 3; i++)
+				if (vertex_buffer[total_connected_points + i] > *((float*)&top_left_back + i))
+					*((float*)&top_left_back + i) = vertex_buffer[total_connected_points + i];
+				else if (vertex_buffer[total_connected_points + i] < *((float*)&bottom_right_front + i))
+					*((float*)&bottom_right_front + i) = vertex_buffer[total_connected_points + i];
 			//vertex_buffer[total_connected_points] +=x;
 			//vertex_buffer[total_connected_points+1] +=y;
 			//vertex_buffer[total_connected_points+2] +=z;
@@ -90,7 +110,6 @@ if (objFile.is_open())
 			/*
 			  Makes triangles using thr stored points 		  
 			*/
-
 			int tCounter = 0;
 			for (int i = 0; i < points_per_vertex; i++)					
 			{
@@ -123,7 +142,19 @@ if (objFile.is_open())
 			}	
 		}
 
-		objFile.close();														
+		objFile.close();
+		size.x = top_left_back.x - bottom_right_front.x;
+		size.y = top_left_back.y - bottom_right_front.y;
+		size.z =  top_left_back.z - bottom_right_front.z;
+
+		/*for (unsigned int i = 0; i < total_connected_points * 3; i+=3)
+		{
+			triangle_faces[i] -= top_left_back.x;
+			triangle_faces[i + 1] -= top_left_back.y;
+			triangle_faces[i + 2] -= top_left_back.z;
+		}*/
+
+		std::cout << "Size: " << size.x << ", " << size.y << ", " << size.z << "\n";
 	}
 
 	else 
@@ -147,6 +178,7 @@ void Model::Draw()
  	glEnableClientState(GL_VERTEX_ARRAY);						// Enable vertex 
 
 	glTranslatef(position.x, position.y, position.z);
+
 	glVertexPointer(3,GL_FLOAT,	0,triangle_faces);				// Vertex Pointer 
 	glNormalPointer(GL_FLOAT, 0, normals);						// Normal pointer 
 	glDrawArrays(GL_TRIANGLES, 0, total_connected_triangles);   // Draw triangles
