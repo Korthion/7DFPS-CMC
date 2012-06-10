@@ -40,6 +40,9 @@ float* Model::calculate_normals( float *coord1, float *coord2, float *coord3 )
   
 int Model::Load(char* filename, float x, float y, float z)
 {
+	position.x = x;
+	position.y = y;
+	position.z = z;
 string line;
 ifstream objFile (filename);	
 if (objFile.is_open())													
@@ -63,9 +66,9 @@ if (objFile.is_open())
 			line[0] = ' ';												
 
             sscanf(line.c_str(),"%f %f %f",	&vertex_buffer[total_connected_points], &vertex_buffer[total_connected_points+1],	&vertex_buffer[total_connected_points+2]);
-			vertex_buffer[total_connected_points] +=x;
-			vertex_buffer[total_connected_points+1] +=y;
-			vertex_buffer[total_connected_points+2] +=z;
+			//vertex_buffer[total_connected_points] +=x;
+			//vertex_buffer[total_connected_points+1] +=y;
+			//vertex_buffer[total_connected_points+2] +=z;
 			
 			// Read floats from the line: v x/y/z
 
@@ -143,6 +146,7 @@ void Model::Draw()
     glEnableClientState(GL_NORMAL_ARRAY);						// Enable normal 
  	glEnableClientState(GL_VERTEX_ARRAY);						// Enable vertex 
 
+	glTranslatef(position.x, position.y, position.z);
 	glVertexPointer(3,GL_FLOAT,	0,triangle_faces);				// Vertex Pointer 
 	glNormalPointer(GL_FLOAT, 0, normals);						// Normal pointer 
 	glDrawArrays(GL_TRIANGLES, 0, total_connected_triangles);   // Draw triangles

@@ -14,7 +14,7 @@ class bullet
 
 	void setCoords(float x, float y, float z, float yrotrad, 
 		           float xrotrad, float accuracy, string weap,
-				   bool tracers, bool iswalking);
+				   bool tracers, bool iswalking, bool zoomedIn);
 	void draw(float tartget_x);
 	void prediction(float x1, float y1, float z1, float x2, float y2, float z2, float target_x);	
 	void WallsPrediction();
