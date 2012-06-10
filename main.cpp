@@ -33,7 +33,7 @@ Model obj[1];
 bullet bullets[200];
 GLfloat intensity[] = {0.90, 0.006, 0};
 GLfloat lumi[] = {1, 1, 1, 1};
-
+bool key_array[256] = { false };
 ObjectInst item;
 
 
@@ -417,6 +417,125 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 	  }
     }
 
+
+	vertex old_position = { xpos, ypos, zpos };
+	
+	if(key_array['w'])
+		{
+		iswalking = true;	
+		glutTimerFunc(100, walk,0);    
+		float xrotrad, yrotrad;
+		yrotrad = (yrot / 180 * PI);
+		xrotrad = (xrot / 180 * PI);
+		float xpostemp2=xpos;
+		float zpostemp2=zpos;
+		xpostemp2 += float(sin(yrotrad));
+		zpostemp2 -= float(cos(yrotrad));
+
+		if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
+			{
+				if (bullet_time == true)
+				{
+				xpos += float(sin(yrotrad))/4;
+				zpos -= float(cos(yrotrad))/4;
+				}
+
+				else
+				{
+				xpos += float(sin(yrotrad));
+				zpos -= float(cos(yrotrad));
+				}
+			}
+		
+		//ypos -= float(sin(xrotrad));     Flying mode
+		}
+	if(key_array['s'])
+		{
+		iswalking = true;		
+		glutTimerFunc(300, walk,0);  
+		float xrotrad, yrotrad;
+		yrotrad = (yrot / 180 * PI);
+		xrotrad = (xrot / 180 * PI);
+		float xpostemp2=xpos;
+		float zpostemp2=zpos;
+		xpostemp2 -= float(sin(yrotrad));
+		zpostemp2 += float(cos(yrotrad));	
+
+		if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
+			{
+			if (bullet_time == true)
+				{
+				xpos -= float(sin(yrotrad))/4;
+				zpos += float(cos(yrotrad))/4;
+				}
+
+			else
+				{
+				xpos -= float(sin(yrotrad));
+				zpos += float(cos(yrotrad));
+				}
+			}
+		}
+	if(key_array['a'])
+		{
+		 iswalking = true;		
+		 glutTimerFunc(300, walk,0);  
+		 float yrotrad;
+		 yrotrad = (yrot / 180 * PI);
+		
+		 float xpostemp2=xpos;
+		 float zpostemp2=zpos;
+		 xpostemp2 -= float(cos(yrotrad)) * 0.5;
+		 zpostemp2 -= float(sin(yrotrad)) * 0.5;	
+		 if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
+			{
+				if (bullet_time == true)
+					{
+					xpos -= (float(cos(yrotrad)) * 0.5)/3;
+					zpos -= (float(sin(yrotrad)) * 0.5)/3;
+					}
+					else
+					{
+					xpos -= float(cos(yrotrad)) * 0.5;
+					zpos -= float(sin(yrotrad)) * 0.5;
+					}
+
+			 }
+		}
+	if(key_array['d'])
+		{
+		iswalking = true;		
+		glutTimerFunc(300, walk,0);  
+		float yrotrad;
+		yrotrad = (yrot / 180 * PI);
+
+		float xpostemp2=xpos;
+		float zpostemp2=zpos;
+		xpostemp2 += float(cos(yrotrad)) * 0.5;
+		zpostemp2 += float(sin(yrotrad)) * 0.5;	
+		if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
+			{
+			if (bullet_time == true)
+				{
+				xpos += (float(cos(yrotrad)) * 0.5)/3;
+				zpos += (float(sin(yrotrad)) * 0.5)/3;
+				}
+				else
+				{
+				xpos += float(cos(yrotrad)) * 0.5;
+				zpos += float(sin(yrotrad)) * 0.5;
+				}
+
+			}
+		}
+
+	vertex cur_position = { xpos, ypos, zpos };	
+	if (CollisionDetection::checkCollision(cur_position))
+	{
+		xpos = old_position.x;
+		zpos = old_position.z;
+	}
+
 //	item.rot_y++;
 
 	glutPostRedisplay();
@@ -588,8 +707,9 @@ void reshape(int w, int h)
 
 void keyboard(unsigned char key, int x, int y) 
 {
-if (key == 'q')
+    if (key == 'q')
     {
+	key_array['q'] = true;
 	if ((*weapon_current).name=="M249")
 		{
 		if (tracers==false)
@@ -612,126 +732,28 @@ if (key == 'q')
 			}
 		}
     }
-	vertex old_position = { xpos, ypos, zpos };
-	if (key == 'w') 
+	
+   	if (key == 'w') 
 	{	
-		iswalking = true;	
-		glutTimerFunc(300, walk,0);    
-		float xrotrad, yrotrad;
-		yrotrad = (yrot / 180 * PI);
-		xrotrad = (xrot / 180 * PI);
-		float xpostemp2=xpos;
-		float zpostemp2=zpos;
-		xpostemp2 += float(sin(yrotrad));
-		zpostemp2 -= float(cos(yrotrad));
-
-		if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
-			{
-				if (bullet_time == true)
-				{
-				xpos += float(sin(yrotrad))/4;
-				zpos -= float(cos(yrotrad))/4;
-				}
-
-				else
-				{
-				xpos += float(sin(yrotrad));
-				zpos -= float(cos(yrotrad));
-				}
-			}
-		
-		//ypos -= float(sin(xrotrad));     Flying mode
-		
+	    key_array['w'] = true;		
 	}
 
 	if (key == 's')
 	{	
-		iswalking = true;		
-		glutTimerFunc(300, walk,0);  
-		float xrotrad, yrotrad;
-		yrotrad = (yrot / 180 * PI);
-		xrotrad = (xrot / 180 * PI);
-		float xpostemp2=xpos;
-		float zpostemp2=zpos;
-		xpostemp2 -= float(sin(yrotrad));
-		zpostemp2 += float(cos(yrotrad));	
-
-		if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
-			{
-			if (bullet_time == true)
-				{
-				xpos -= float(sin(yrotrad))/4;
-				zpos += float(cos(yrotrad))/4;
-				}
-
-			else
-				{
-				xpos -= float(sin(yrotrad));
-				zpos += float(cos(yrotrad));
-				}
-			}
+	    key_array['s'] = true;		
 	}
 
 	if (key == 'd') 
 	{
-		iswalking = true;		
-		glutTimerFunc(300, walk,0);  
-		float yrotrad;
-		yrotrad = (yrot / 180 * PI);
-
-		float xpostemp2=xpos;
-		float zpostemp2=zpos;
-		xpostemp2 += float(cos(yrotrad)) * 0.5;
-		zpostemp2 += float(sin(yrotrad)) * 0.5;	
-		if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
-			{
-			if (bullet_time == true)
-				{
-				xpos += (float(cos(yrotrad)) * 0.5)/3;
-				zpos += (float(sin(yrotrad)) * 0.5)/3;
-				}
-				else
-				{
-				xpos += float(cos(yrotrad)) * 0.5;
-				zpos += float(sin(yrotrad)) * 0.5;
-				}
-
-			}
+	    key_array['d'] = true;
 	}
 	
 	if (key == 'a')
 	{	
-	 iswalking = true;		
-     glutTimerFunc(300, walk,0);  
-     float yrotrad;
-	 yrotrad = (yrot / 180 * PI);
-		
-	 float xpostemp2=xpos;
-	 float zpostemp2=zpos;
-	 xpostemp2 -= float(cos(yrotrad)) * 0.5;
-	 zpostemp2 -= float(sin(yrotrad)) * 0.5;	
-	 if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
-		{
-			if (bullet_time == true)
-				{
-				xpos -= (float(cos(yrotrad)) * 0.5)/3;
-				zpos -= (float(sin(yrotrad)) * 0.5)/3;
-				}
-				else
-				{
-				xpos -= float(cos(yrotrad)) * 0.5;
-				zpos -= float(sin(yrotrad)) * 0.5;
-				}
-
-		}
+	    key_array['a'] = true;	
     }
-	vertex cur_position = { xpos, ypos, zpos };
-	if (CollisionDetection::checkCollision(cur_position))
-	{
-		xpos = old_position.x;
-		zpos = old_position.z;
-	}
-if (key == '1')
+	
+	if (key == '1')
 	{
 	weapon_current = &weapon_MG;
 		
@@ -740,7 +762,7 @@ if (key == '1')
 	glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
 	}
 
-if (key == '2')
+	if (key == '2')
 	{
 		weapon_current = &weapon_pistol;
 		
@@ -749,14 +771,15 @@ if (key == '2')
 		glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
 	}
 	
-if (key == '3')
+	if (key == '3')
 	{
 	weapon_current = &weapon_sniper;
 	zoomedIn=false;
 	Sensitivity=6;
 	glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
 	}
-if (key == '4')
+
+	if (key == '4')
 	{
 	if(show_hud == true)
 		show_hud = false;
@@ -764,7 +787,8 @@ if (key == '4')
 	else
 		show_hud = true;
 	}
-if (key == 'r')
+
+	if (key == 'r')
 	{
 if (reloading == false)
 	{
@@ -791,19 +815,19 @@ if (reloading == false)
 	}
 
 	}
-if (key == 'z')
+
+	if (key == 'z')
     {
 	if (target_x < 199)
 	target_x += 1 / bullet_time_const;
 	}
 
-if (key == 'x')
+	if (key == 'x')
     {	
 	target_x -= 1 / bullet_time_const;
 	}
 
-
-if (key == 27) 
+	if (key == 27) 
 	{
 	Sound.drop_engines();
 	obj[0].Release();
@@ -815,24 +839,28 @@ void keybup(unsigned char key, int x, int y)
 {
 if (key=='w') 
 {
+key_array['w'] = false;
 iswalking=false;
-glutTimerFunc(300, stopwalk,0);
+glutTimerFunc(100, stopwalk,0);
 }
 
 if (key=='a')
 {
+key_array['a'] = false;
 iswalking=false;
-glutTimerFunc(300, stopwalk,0);
+glutTimerFunc(100, stopwalk,0);
 }
 
 if (key=='d') 
 {
+key_array['d'] = false;
 iswalking=false;
-glutTimerFunc(300, stopwalk,0);
+glutTimerFunc(100, stopwalk,0);
 }
 
 if (key=='s') 
 {
+key_array['s'] = false;
 iswalking=false;
 glutTimerFunc(300, stopwalk,0);
 }
@@ -891,6 +919,7 @@ else if (fullscreen == false)
 }
 
 }
+
 float clamp(float value, float min, float max)
 {
 	if(value > max) return max;
@@ -990,6 +1019,7 @@ int main (int argc, char **argv)
     glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keybup);
 	glutSetCursor(GLUT_CURSOR_NONE);
+	glutIgnoreKeyRepeat(1);
 
 	obj[0].Load("house.obj",0,0,0);	 //loads the house object
 	obj[1].Load("MG2.obj",0,0,0);	     //loads the turret object
