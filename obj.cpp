@@ -147,13 +147,12 @@ if (objFile.is_open())
 		size.y = top_left_back.y - bottom_right_front.y;
 		size.z =  top_left_back.z - bottom_right_front.z;
 
-		/*for (unsigned int i = 0; i < total_connected_points * 3; i+=3)
+		for (unsigned int i = 0; i < total_connected_points * 9; i+=3)
 		{
-			triangle_faces[i] -= top_left_back.x;
-			triangle_faces[i + 1] -= top_left_back.y;
-			triangle_faces[i + 2] -= top_left_back.z;
-		}*/
-
+			triangle_faces[i] += top_left_back.x;
+			triangle_faces[i+1] += bottom_right_front.y;
+		}
+		
 		std::cout << "Size: " << size.x << ", " << size.y << ", " << size.z << "\n";
 	}
 

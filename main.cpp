@@ -15,7 +15,7 @@
 using namespace std;
 using namespace irrklang;
 
-float lastx, lasty, xpos = 0, ypos = 2, zpos = 0, xrot = 0, yrot = 0, target_x = 170.9;
+float lastx, lasty, xpos = 0, ypos = 7, zpos = 0, xrot = 0, yrot = 0, target_x = 170.9;
 float g_rotation = 0, g_rotation_speed = 90.0f, accuracy = 0, recoil = 0;
 const float PI = 3.141592654;
 float positionz[50], positionx[50];
@@ -129,10 +129,10 @@ void texturize()
     glBegin (GL_QUADS);
 
 
-    glTexCoord2d(0.0,0.0); glVertex3d(target_x,-5,12); 
-    glTexCoord2d(1.0,0.0); glVertex3d(target_x,-5,25); 
-    glTexCoord2d(1.0,1.0); glVertex3d(target_x,8,25);
-    glTexCoord2d(0.0,1.0); glVertex3d(target_x,8,12);
+    glTexCoord2d(0.0,0.0); glVertex3d(target_x, 0,12); 
+    glTexCoord2d(1.0,0.0); glVertex3d(target_x, 0,25); 
+    glTexCoord2d(1.0,1.0); glVertex3d(target_x, 13,25);
+    glTexCoord2d(0.0,1.0); glVertex3d(target_x, 13,12);
     glEnd();
 	
 
@@ -140,34 +140,34 @@ void texturize()
     glBegin (GL_QUADS);
 
 	glNormal3f(0.0, 1.0f, 0.0f);
-    glTexCoord2d(0.0,0.0); glVertex3d(200,-5,200); 
-    glTexCoord2d(40,0.0); glVertex3d(-200,-5,200);
-    glTexCoord2d(40,40); glVertex3d(-200,-5,-200); 
-    glTexCoord2d(0.0,40); glVertex3d(200,-5,-200);
+    glTexCoord2d(0.0,0.0); glVertex3d(200, 0,200); 
+    glTexCoord2d(40,0.0); glVertex3d(-200, 0,200);
+    glTexCoord2d(40,40); glVertex3d(-200, 0,-200); 
+    glTexCoord2d(0.0,40); glVertex3d(200, 0,-200);
     glEnd();
 
 	glBindTexture( GL_TEXTURE_2D, wallTexture.getId());    
     glBegin (GL_QUADS);
 	
-	glTexCoord2d(0.0,0.0); glVertex3d(200,-5,200); 
-	glTexCoord2d(80,0.0); glVertex3d(-200,-5,200);
-	glTexCoord2d(80,3); glVertex3d(-200,8,200);
-    glTexCoord2d(0.0,3); glVertex3d(200,8,200); 
+	glTexCoord2d(0.0,0.0); glVertex3d(200, 0,200); 
+	glTexCoord2d(80,0.0); glVertex3d(-200, 0,200);
+	glTexCoord2d(80,3); glVertex3d(-200, 13,200);
+    glTexCoord2d(0.0,3); glVertex3d(200, 13,200); 
 	
-    glTexCoord2d(0.0,0.0); glVertex3d(-200,-5,200);
-    glTexCoord2d(80,0.0); glVertex3d(-200,-5,-200); 
-    glTexCoord2d(80,3); glVertex3d(-200,8,-200);
-    glTexCoord2d(0.0,3); glVertex3d(-200,8,200); 
+    glTexCoord2d(0.0,0.0); glVertex3d(-200, 0,200);
+    glTexCoord2d(80,0.0); glVertex3d(-200, 0,-200); 
+    glTexCoord2d(80,3); glVertex3d(-200, 13,-200);
+    glTexCoord2d(0.0,3); glVertex3d(-200, 13,200); 
 
-    glTexCoord2d(0.0,0.0); glVertex3d(-200,-5,-200); 
-    glTexCoord2d(80,0.0); glVertex3d(200,-5,-200);
-    glTexCoord2d(80,3); glVertex3d(200,8,-200);
-    glTexCoord2d(0.0,3); glVertex3d(-200,8,-200); 
+    glTexCoord2d(0.0,0.0); glVertex3d(-200, 0,-200); 
+    glTexCoord2d(80,0.0); glVertex3d(200, 0,-200);
+    glTexCoord2d(80,3); glVertex3d(200, 13,-200);
+    glTexCoord2d(0.0,3); glVertex3d(-200, 13,-200); 
 
-	glTexCoord2d(0.0,0.0); glVertex3d(200,-5,-200); 
-    glTexCoord2d(80,0.0); glVertex3d(200,-5,200);
-    glTexCoord2d(80,3); glVertex3d(200,8,200);
-    glTexCoord2d(0.0,3); glVertex3d(200,8,-200); 
+	glTexCoord2d(0.0,0.0); glVertex3d(200, 0,-200); 
+    glTexCoord2d(80,0.0); glVertex3d(200, 0,200);
+    glTexCoord2d(80,3); glVertex3d(200, 13,200);
+    glTexCoord2d(0.0,3); glVertex3d(200, 13,-200); 
     glEnd();
 	glDisable(GL_TEXTURE_2D);	
 }
@@ -417,7 +417,7 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 	  }
     }
 
-	item.rot_y++;
+//	item.rot_y++;
 
 	glutPostRedisplay();
 	prevTime = currTime;
@@ -991,8 +991,8 @@ int main (int argc, char **argv)
 	glutKeyboardUpFunc(keybup);
 	glutSetCursor(GLUT_CURSOR_NONE);
 
-	obj[0].Load("house.obj",0,-5,0);	 //loads the house object
-	obj[1].Load("MG2.obj",0,-12,0);	     //loads the turret object
+	obj[0].Load("house.obj",0,0,0);	 //loads the house object
+	obj[1].Load("MG2.obj",0,0,0);	     //loads the turret object
 
 	Sound.playAmbient();
 	Sound.playWalk();
