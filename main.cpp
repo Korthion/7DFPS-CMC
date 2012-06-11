@@ -15,14 +15,13 @@
 using namespace std;
 using namespace irrklang;
 
-float lastx, lasty, xpos = 0, ypos = 7, zpos = 0, xrot = 0, yrot = 0, target_x = 170.9;
+float lastx, lasty, xpos = 0, ypos = 7, zpos = 0, xrot = 0, yrot = 0, target_x = 170.9, acc = 0.025, speed_up, speed_dif = 1.0;
 float g_rotation = 0, g_rotation_speed = 90.0f, accuracy = 0, recoil = 0;
 const float PI = 3.141592654;
 float positionz[50], positionx[50];
 bool firstMouseButton = false;
 int bulletcount = 0;
-bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true, glock_auto = false, show_hud = true, reloading = false;
-bool crouched = false;
+bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true, glock_auto = false, show_hud = true, reloading = false, isJumping = false, crouched = false;
 int winW = 0, winH = 0, Sensitivity = 6;
 int startTime, prevTime;
 float angle=0, bullet_time_const = 1;
@@ -36,6 +35,7 @@ GLfloat intensity[] = {0.90, 0.006, 0};
 GLfloat lumi[] = {1, 1, 1, 1};
 bool key_array[256] = { false };
 ObjectInst houses[7];
+
 
 
 vertex lookAt;
@@ -429,10 +429,8 @@ static void logic(int value)
 	if(key_array['w'])
 		{
 		iswalking = true;	
-		if (crouched == false)
-			{
-			glutTimerFunc(100, walk,0);  
-			}
+		if (!isJumping && !crouched)
+			glutTimerFunc(100, walk,0);    
 		float xrotrad, yrotrad;
 		yrotrad = (yrot / 180 * PI);
 		xrotrad = (xrot / 180 * PI);
@@ -444,26 +442,24 @@ static void logic(int value)
 		if((xpostemp2<199)&&(xpostemp2>-199))
 		{
 			if (bullet_time == true)
-				xpos += float(sin(yrotrad))/4;
+				xpos += float(sin(yrotrad))/4 * speed_dif;
 			else
-				xpos += float(sin(yrotrad))*0.8;
+				xpos += float(sin(yrotrad))*0.8 * speed_dif;
 		}
 		if ((zpostemp2<199)&&(zpostemp2>-199))
 		{
 			if (bullet_time == true)
-				zpos -= float(cos(yrotrad))/4;
+				zpos -= float(cos(yrotrad))/4 * speed_dif;
 			else
-				zpos -= float(cos(yrotrad))*0.8;
+				zpos -= float(cos(yrotrad))*0.8 * speed_dif;
 		}
 		//ypos -= float(sin(xrotrad));     Flying mode
 	}
 	if(key_array['s'])
 		{
 		iswalking = true;		
-		if (crouched == false)
-			{
+		if (!isJumping && !crouched)
 			glutTimerFunc(100, walk,0);  
-			}
 		float xrotrad, yrotrad;
 		yrotrad = (yrot / 180 * PI);
 		xrotrad = (xrot / 180 * PI);
@@ -475,25 +471,23 @@ static void logic(int value)
 		if((xpostemp2<199)&&(xpostemp2>-199))
 		{
 			if (bullet_time == true)
-				xpos -= float(sin(yrotrad))/4;
+				xpos -= float(sin(yrotrad))/4 * speed_dif;
 			else
-				xpos -= float(sin(yrotrad))*0.8;
+				xpos -= float(sin(yrotrad))*0.8 * speed_dif;
 		}
 		if((zpostemp2<199)&&(zpostemp2>-199))
 		{
 			if (bullet_time == true)
-				zpos += float(cos(yrotrad))/4;
+				zpos += float(cos(yrotrad))/4 * speed_dif;
 			else
-				zpos += float(cos(yrotrad))*0.8;
+				zpos += float(cos(yrotrad))*0.8 * speed_dif;
 		}
 	}
 	if(key_array['a'])
 	{
 		 iswalking = true;		
-		 if (crouched == false)
-			{
+		 if (!isJumping && !crouched)
 			glutTimerFunc(100, walk,0);  
-			}  
 		 float yrotrad;
 		 yrotrad = (yrot / 180 * PI);
 		
@@ -504,25 +498,23 @@ static void logic(int value)
 		 if((xpostemp2<199)&&(xpostemp2>-199))
 		 {
 			 if (bullet_time == true)
-				 xpos -= (float(cos(yrotrad)) * 0.5)/3;
+				 xpos -= (float(cos(yrotrad)) * 0.5)/3 * speed_dif;
 			 else
-				 xpos -= float(cos(yrotrad)) * 0.5;
+				 xpos -= float(cos(yrotrad)) * 0.5 * speed_dif;
 		 }
 		 if ((zpostemp2<199)&&(zpostemp2>-199))
 		 {
 			if (bullet_time == true)
-				zpos -= (float(sin(yrotrad)) * 0.5)/3;
+				zpos -= (float(sin(yrotrad)) * 0.5)/3 * speed_dif;
 			else
-				zpos -= float(sin(yrotrad)) * 0.5;
+				zpos -= float(sin(yrotrad)) * 0.5 * speed_dif;
 		 }
 	 }
 	if(key_array['d'])
 		{
-		iswalking = true;		
-		if (crouched == false)
-			{
+		iswalking = true;
+		if (!isJumping && !crouched)
 			glutTimerFunc(100, walk,0);  
-			}  
 		float yrotrad;
 		yrotrad = (yrot / 180 * PI);
 
@@ -533,16 +525,16 @@ static void logic(int value)
 		if((xpostemp2<199)&&(xpostemp2>-199))
 		{
 			if (bullet_time == true)
-				xpos += (float(cos(yrotrad)) * 0.5)/3;
+				xpos += (float(cos(yrotrad)) * 0.5)/3 * speed_dif;
 			else
-				xpos += float(cos(yrotrad)) * 0.5;
+				xpos += float(cos(yrotrad)) * 0.5 * speed_dif;
 		}
 		if ((zpostemp2<199)&&(zpostemp2>-199))
 		{
 			if (bullet_time == true)
-				zpos += (float(sin(yrotrad)) * 0.5)/3;
+				zpos += (float(sin(yrotrad)) * 0.5)/3 * speed_dif;
 			else				
-				zpos += float(sin(yrotrad)) * 0.5;
+				zpos += float(sin(yrotrad)) * 0.5 * speed_dif;
 		}
 	}
 
@@ -564,6 +556,14 @@ static void logic(int value)
 	cur_position.z = zpos;
 	if (CollisionDetection::checkCollision(cur_position))
 		zpos = old_position.z;
+	cur_position.x = old_position.x;
+	if (!CollisionDetection::checkCollision(cur_position) && !crouched)
+	{
+		if (ypos > 7)
+			ypos -= acc * 5;
+		else
+			ypos = 7;
+	}
 
 //	item.rot_y++;
 
@@ -691,6 +691,30 @@ void reshape(int w, int h)
     glMatrixMode(GL_MODELVIEW); 
 }
 
+void playerJumpTick(int value)
+{
+	float old_ypos = ypos;
+	ypos += speed_up;
+	speed_up -= acc;
+
+	vertex player_pos = { xpos, ypos, zpos };
+	if (ypos < 7 || CollisionDetection::checkCollision(player_pos))
+	{
+		isJumping = false;
+		ypos = old_ypos;
+	}
+	else
+		glutTimerFunc(17, playerJumpTick, 0);
+}
+
+void playerJump()
+{
+	isJumping = true;
+	glutTimerFunc(100, stopwalk,0);
+	speed_up = 0.75;
+	playerJumpTick(0);
+}
+
 void keyboard(unsigned char key, int x, int y) 
 {
     if (key == 'q')
@@ -738,14 +762,16 @@ void keyboard(unsigned char key, int x, int y)
 	{
 	    key_array['a'] = true;	
     }
-
-	if (key == 'c')
-	{
-	glutTimerFunc(100, stopwalk,0);
-	crouched = true;
-	ypos = 2.2;
-	}
 	
+	if (key == VK_SPACE && !isJumping)
+		playerJump();
+	if (key == 'c' && !isJumping)
+	{
+		glutTimerFunc(100, stopwalk,0);
+		crouched = true;
+		ypos = 2.2;
+		speed_dif = 0.3;
+	}
 	if (key == '1')
 	{
 		weapon_current = &weapon_MG;
@@ -865,13 +891,6 @@ iswalking=false;
 glutTimerFunc(100, stopwalk,0);
 }
 
-
-if (key == 'c')
-	{	
-	crouched = false;
-	ypos = 5;
-	}
-
 if (key == 't')
 {	
      if (bullet_time == false)
@@ -899,7 +918,12 @@ if (key == 't')
 		  Sound.playSpeed=1.0;
 	 }
 }
-
+if (key == 'c')
+	{	
+	crouched = false;
+	ypos = 7;
+    speed_dif = 1.0;
+	}
 if (key == VK_TAB)
 {
 
