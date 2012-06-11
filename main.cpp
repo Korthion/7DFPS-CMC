@@ -92,6 +92,7 @@ void accuracyfalloff(int a)
 		{
 		  accuracy=accuracy-0.002;		  
 		}
+	
 	if(recoil>0)
 		{
 		recoil=recoil-0.9;
@@ -330,8 +331,8 @@ static void logic(int value)
 		glutTimerFunc(200, shotfade, 0);
 		glutTimerFunc(85*bullet_time_const, firerate, 0);	
 
-		if (accuracy<0.05)
-			{accuracy=accuracy+0.0058;}
+		if (accuracy<0.045)
+			{accuracy=accuracy+0.0075;}
 
 		recoil=recoil+0.3;
 		}
@@ -344,6 +345,7 @@ static void logic(int value)
 
 		glutTimerFunc(glock_firerate, shotfade, 0);
 		glutTimerFunc(glock_firerate*bullet_time_const, firerate, 0);		
+		
 		if (glock_auto == false)
 			{
 			if (accuracy<0.040)
@@ -351,6 +353,7 @@ static void logic(int value)
 
 			recoil=recoil+0.5;
 			}
+		
 		else if (glock_auto == true)
 			{
 			if (accuracy<0.018)
@@ -365,16 +368,18 @@ static void logic(int value)
 
 	else if((*weapon_current).name=="SV-98")
 		{
-bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy/5, (*weapon_current).name, false, iswalking, zoomedIn);
+		bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accuracy/5, (*weapon_current).name, false, iswalking, zoomedIn);
 		Sound.StopShotFade();	
 		Sound.playShotSniper();
 
 		glutTimerFunc(200, shotfade, 0);
 		glutTimerFunc(500, sniper_reload, 0);
+		
 		if(bullet_time == true)
 			{
 			glutTimerFunc(3500, firerate, 0);	
 			}
+	
 		else
 			{
 			glutTimerFunc(2000, firerate, 0);	
@@ -723,17 +728,21 @@ void keyboard(unsigned char key, int x, int y)
 	
 	if (key == '1')
 	{
-	weapon_current = &weapon_MG;
+		weapon_current = &weapon_MG;
 		
-	zoomedIn=false;
-	Sensitivity=6;
-	glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
+		accuracy = 0;
+		recoil = 0;
+		zoomedIn=false;
+		Sensitivity=6;
+		glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
 	}
 
 	if (key == '2')
 	{
 		weapon_current = &weapon_pistol;
-		
+
+		accuracy = 0;
+		recoil = 0;
 		zoomedIn=false;
 		Sensitivity=6;
 		glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
@@ -741,10 +750,13 @@ void keyboard(unsigned char key, int x, int y)
 	
 	if (key == '3')
 	{
-	weapon_current = &weapon_sniper;
-	zoomedIn=false;
-	Sensitivity=6;
-	glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
+		weapon_current = &weapon_sniper;
+
+		accuracy = 0;
+		recoil = 0;
+		zoomedIn=false;
+		Sensitivity=6;
+		glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
 	}
 
 	if (key == '4')
