@@ -90,7 +90,7 @@ for(int i=0;i<=122;i++)
 			xpos += float(sin(yrotrad))*0.05;
 	        zpos -= float(cos(yrotrad))*0.05;		
 			ypos -= float(sin(xrotrad))*0.05;
-			if(((xpos>=200)||(xpos<=-200)||(zpos>=200)||(zpos<=-200))&&(ypos>=0)&&(ypos<=13))
+			if(((xpos>=200)||(xpos<=-200)||(zpos>=200)||(zpos<=-200))&&(ypos>=0)&&(ypos<=18))
 				{
 				 stopped=true;
 				}			

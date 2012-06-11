@@ -415,7 +415,7 @@ static void logic(int value)
 			if(collision3D(xpostemp,ypostemp,zpostemp,target_x,0,12,target_x+14,13,25)==true)
 				{bullets[i].prediction(target_x, 0, 12, target_x+14, 13, 25, target_x);}
 
-			if(((xpostemp>200)||(xpostemp<-200)||(zpostemp>200)||(zpostemp<-200))&&(ypostemp>0)&&(ypostemp<13))
+			if(((xpostemp>200)||(xpostemp<-200)||(zpostemp>200)||(zpostemp<-200))&&(ypostemp>0)&&(ypostemp<18))
 				{
 				bullets[i].WallsPrediction();			
 				}
