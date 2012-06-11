@@ -22,6 +22,7 @@ float positionz[50], positionx[50];
 bool firstMouseButton = false;
 int bulletcount = 0;
 bool clearToShoot = true, zoomedIn = false, iswalking = false, tracers = false, bullet_time = false, fullscreen = true, glock_auto = false, show_hud = true, reloading = false;
+bool crouched = false;
 int winW = 0, winH = 0, Sensitivity = 6;
 int startTime, prevTime;
 float angle=0, bullet_time_const = 1;
@@ -428,7 +429,10 @@ static void logic(int value)
 	if(key_array['w'])
 		{
 		iswalking = true;	
-		glutTimerFunc(100, walk,0);    
+		if (crouched == false)
+			{
+			glutTimerFunc(100, walk,0);  
+			}
 		float xrotrad, yrotrad;
 		yrotrad = (yrot / 180 * PI);
 		xrotrad = (xrot / 180 * PI);
@@ -456,7 +460,10 @@ static void logic(int value)
 	if(key_array['s'])
 		{
 		iswalking = true;		
-		glutTimerFunc(100, walk,0);  
+		if (crouched == false)
+			{
+			glutTimerFunc(100, walk,0);  
+			}
 		float xrotrad, yrotrad;
 		yrotrad = (yrot / 180 * PI);
 		xrotrad = (xrot / 180 * PI);
@@ -483,7 +490,10 @@ static void logic(int value)
 	if(key_array['a'])
 	{
 		 iswalking = true;		
-		 glutTimerFunc(100, walk,0);  
+		 if (crouched == false)
+			{
+			glutTimerFunc(100, walk,0);  
+			}  
 		 float yrotrad;
 		 yrotrad = (yrot / 180 * PI);
 		
@@ -509,7 +519,10 @@ static void logic(int value)
 	if(key_array['d'])
 		{
 		iswalking = true;		
-		glutTimerFunc(100, walk,0);  
+		if (crouched == false)
+			{
+			glutTimerFunc(100, walk,0);  
+			}  
 		float yrotrad;
 		yrotrad = (yrot / 180 * PI);
 
@@ -725,6 +738,13 @@ void keyboard(unsigned char key, int x, int y)
 	{
 	    key_array['a'] = true;	
     }
+
+	if (key == 'c')
+	{
+	glutTimerFunc(100, stopwalk,0);
+	crouched = true;
+	ypos = 2.2;
+	}
 	
 	if (key == '1')
 	{
@@ -844,6 +864,13 @@ key_array['s'] = false;
 iswalking=false;
 glutTimerFunc(100, stopwalk,0);
 }
+
+
+if (key == 'c')
+	{	
+	crouched = false;
+	ypos = 5;
+	}
 
 if (key == 't')
 {	
