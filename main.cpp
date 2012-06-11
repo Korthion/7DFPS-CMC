@@ -665,6 +665,7 @@ void render(void)
 		hud.outputText(-0.225,0.225, ss.str(),1);
 		hud.outputText(-0.225,0.2, ss2.str(),1);
 		hud.outputText(-0.225,0.175, ss3.str(),1);
+		hud.outputText(-0.225,-0.1375, ammo.str(),1);
 		}
 	hud.crossair(zoomedIn);			
 	
