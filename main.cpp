@@ -393,6 +393,7 @@ static void logic(int value)
 		}
 
 	glutWarpPointer(lastx,lasty+recoil);
+	
 
 	weapon_current->magazine_count--;
 	bulletcount++;	
@@ -550,13 +551,18 @@ static void logic(int value)
 		}
 
 	vertex cur_position = { xpos, ypos, old_position.z };	
+	
 	if (CollisionDetection::checkCollision(cur_position))
 		xpos = old_position.x;
+	
 	cur_position.x = old_position.x;
 	cur_position.z = zpos;
+	
 	if (CollisionDetection::checkCollision(cur_position))
 		zpos = old_position.z;
+	
 	cur_position.x = old_position.x;
+	
 	if (!CollisionDetection::checkCollision(cur_position) && !crouched)
 	{
 		if (ypos > 7)
