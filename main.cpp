@@ -153,23 +153,23 @@ void texturize()
 	
 	glTexCoord2d(0.0,0.0); glVertex3d(200, 0,200); 
 	glTexCoord2d(80,0.0); glVertex3d(-200, 0,200);
-	glTexCoord2d(80,3); glVertex3d(-200, 13,200);
-    glTexCoord2d(0.0,3); glVertex3d(200, 13,200); 
+	glTexCoord2d(80,3); glVertex3d(-200, 18,200);
+    glTexCoord2d(0.0,3); glVertex3d(200, 18,200); 
 	
     glTexCoord2d(0.0,0.0); glVertex3d(-200, 0,200);
     glTexCoord2d(80,0.0); glVertex3d(-200, 0,-200); 
-    glTexCoord2d(80,3); glVertex3d(-200, 13,-200);
-    glTexCoord2d(0.0,3); glVertex3d(-200, 13,200); 
+    glTexCoord2d(80,3); glVertex3d(-200, 18,-200);
+    glTexCoord2d(0.0,3); glVertex3d(-200, 18,200); 
 
     glTexCoord2d(0.0,0.0); glVertex3d(-200, 0,-200); 
     glTexCoord2d(80,0.0); glVertex3d(200, 0,-200);
-    glTexCoord2d(80,3); glVertex3d(200, 13,-200);
-    glTexCoord2d(0.0,3); glVertex3d(-200, 13,-200); 
+    glTexCoord2d(80,3); glVertex3d(200, 18,-200);
+    glTexCoord2d(0.0,3); glVertex3d(-200, 18,-200); 
 
 	glTexCoord2d(0.0,0.0); glVertex3d(200, 0,-200); 
     glTexCoord2d(80,0.0); glVertex3d(200, 0,200);
-    glTexCoord2d(80,3); glVertex3d(200, 13,200);
-    glTexCoord2d(0.0,3); glVertex3d(200, 13,-200); 
+    glTexCoord2d(80,3); glVertex3d(200, 18,200);
+    glTexCoord2d(0.0,3); glVertex3d(200, 18,-200); 
     glEnd();
 	glDisable(GL_TEXTURE_2D);	
 }
@@ -184,30 +184,30 @@ void drawSkybox()
 	glBindTexture( GL_TEXTURE_2D, skyTexture.getId());  
 	glBegin (GL_QUADS);
 
-	glTexCoord2d(0.0,0.0); glVertex3d(300+xpos,-5+ypos,zpos+300); 
-    glTexCoord2d(3,0.0); glVertex3d(-300+xpos,-5+ypos,300+zpos);
-    glTexCoord2d(3,1); glVertex3d(-300+xpos,50+ypos,300+zpos);
-    glTexCoord2d(0.0,1); glVertex3d(300+xpos,50+ypos,300+zpos);
+	glTexCoord2d(0.0,0.0); glVertex3d(300+xpos,-5+(ypos - 7),zpos+300); 
+    glTexCoord2d(3,0.0); glVertex3d(-300+xpos,-5+(ypos - 7),300+zpos);
+    glTexCoord2d(3,1); glVertex3d(-300+xpos,50+(ypos - 7),300+zpos);
+    glTexCoord2d(0.0,1); glVertex3d(300+xpos,50+(ypos - 7),300+zpos);
 
-	glTexCoord2d(0.0,0.0); glVertex3d(-300+xpos,-5+ypos,300+zpos);
-    glTexCoord2d(3,0.0); glVertex3d(-300+xpos,-5+ypos,-300+zpos); 
-    glTexCoord2d(3,1); glVertex3d(-300+xpos,50+ypos,-300+zpos);
-    glTexCoord2d(0.0,1); glVertex3d(-300+xpos,50+ypos,300+zpos); 
+	glTexCoord2d(0.0,0.0); glVertex3d(-300+xpos,-5+(ypos - 7),300+zpos);
+    glTexCoord2d(3,0.0); glVertex3d(-300+xpos,-5+(ypos - 7),-300+zpos); 
+    glTexCoord2d(3,1); glVertex3d(-300+xpos,50+(ypos - 7),-300+zpos);
+    glTexCoord2d(0.0,1); glVertex3d(-300+xpos,50+(ypos - 7),300+zpos); 
 
-	glTexCoord2d(0.0,0.0); glVertex3d(-300+xpos,-5+ypos,-300+zpos); 
-    glTexCoord2d(3,0.0); glVertex3d(300+xpos,-5+ypos,-300+zpos);
-    glTexCoord2d(3,1); glVertex3d(300+xpos,50+ypos,-300+zpos);
-    glTexCoord2d(0.0,1); glVertex3d(-300+xpos,50+ypos,-300+zpos); 
+	glTexCoord2d(0.0,0.0); glVertex3d(-300+xpos,-5+(ypos - 7),-300+zpos); 
+    glTexCoord2d(3,0.0); glVertex3d(300+xpos,-5+(ypos - 7),-300+zpos);
+    glTexCoord2d(3,1); glVertex3d(300+xpos,50+(ypos - 7),-300+zpos);
+    glTexCoord2d(0.0,1); glVertex3d(-300+xpos,50+(ypos - 7),-300+zpos); 
 
-	glTexCoord2d(0.0,0.0); glVertex3d(300+xpos,-5+ypos,-300+zpos); 
-    glTexCoord2d(3,0.0); glVertex3d(300+xpos,-5+ypos,300+zpos);
-    glTexCoord2d(3,1); glVertex3d(300+xpos,50+ypos,300+zpos);
-    glTexCoord2d(0.0,1); glVertex3d(300+xpos,50+ypos,-300+zpos); 
+	glTexCoord2d(0.0,0.0); glVertex3d(300+xpos,-5+(ypos - 7),-300+zpos); 
+    glTexCoord2d(3,0.0); glVertex3d(300+xpos,-5+(ypos - 7),300+zpos);
+    glTexCoord2d(3,1); glVertex3d(300+xpos,50+(ypos - 7),300+zpos);
+    glTexCoord2d(0.0,1); glVertex3d(300+xpos,50+(ypos - 7),-300+zpos); 
 
-	glTexCoord2d(0.0,0.0); glVertex3d(300+xpos,50+ypos,300+zpos); 
-    glTexCoord2d(3.0,0.0); glVertex3d(-300+xpos,50+ypos,300+zpos);
-	glTexCoord2d(3.0,5.0); glVertex3d(-300+xpos,50+ypos,-300+zpos);
-    glTexCoord2d(0.0,5.0); glVertex3d(300+xpos,50+ypos,-300+zpos);     
+	glTexCoord2d(0.0,0.0); glVertex3d(300+xpos,50+(ypos - 7),300+zpos); 
+    glTexCoord2d(3.0,0.0); glVertex3d(-300+xpos,50+(ypos - 7),300+zpos);
+	glTexCoord2d(3.0,5.0); glVertex3d(-300+xpos,50+(ypos - 7),-300+zpos);
+    glTexCoord2d(0.0,5.0); glVertex3d(300+xpos,50+(ypos - 7),-300+zpos);     
     glEnd();
 
 	glDisable(GL_TEXTURE_2D);
@@ -774,43 +774,43 @@ void keyboard(unsigned char key, int x, int y)
 	}
 	if (key == '1')
 	{
-	if (reloading == false)
+		if (reloading == false)
 		{
-		weapon_current = &weapon_MG;
+			weapon_current = &weapon_MG;
 		
-		accuracy = 0;
-		recoil = 0;
-		zoomedIn=false;
-		Sensitivity=6;
-		glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
+			accuracy = 0;
+			recoil = 0;
+			zoomedIn=false;
+			Sensitivity=6;
+			glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
 		}
 	}
 
 	if (key == '2')
 	{
-	    if (reloading == false)
+		if (reloading == false)
 		{
-		weapon_current = &weapon_pistol;
+			weapon_current = &weapon_pistol;
 
-		accuracy = 0;
-		recoil = 0;
-		zoomedIn=false;
-		Sensitivity=6;
-		glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
+			accuracy = 0;
+			recoil = 0;
+			zoomedIn=false;
+			Sensitivity=6;
+			glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
 		}
 	}
 	
 	if (key == '3')
 	{
-	    if (reloading == false)
+		if (reloading == false)
 		{
-		weapon_current = &weapon_sniper;
+			weapon_current = &weapon_sniper;
 
-		accuracy = 0;
-		recoil = 0;
-		zoomedIn=false;
-		Sensitivity=6;
-		glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
+			accuracy = 0;
+			recoil = 0;
+			zoomedIn=false;
+			Sensitivity=6;
+			glViewport(0, 0, (GLsizei)winW, (GLsizei)winH);
 		}
 	}
 
