@@ -403,13 +403,13 @@ bullets[bulletcount].setCoords(xpos, ypos, zpos, yrot/180*PI, xrot/180*PI, accur
 			zpostemp -= float(cos(bullets[i].yrotrad))*bullets[i].speed;		
 			ypostemp -= float(sin(bullets[i].xrotrad))*bullets[i].speed;
 
-			if(ypostemp<=-5)
+			if(ypostemp<=0)
 				{bullets[i].GroundPrediction();}
 
-			if(collision3D(xpostemp,ypostemp,zpostemp,target_x,-5,12,target_x+14,8,25)==true)
-				{bullets[i].prediction(target_x, -5, 12, target_x+14, 8, 25, target_x);}
+			if(collision3D(xpostemp,ypostemp,zpostemp,target_x,0,12,target_x+14,13,25)==true)
+				{bullets[i].prediction(target_x, 0, 12, target_x+14, 13, 25, target_x);}
 
-			if(((xpostemp>200)||(xpostemp<-200)||(zpostemp>200)||(zpostemp<-200))&&(ypostemp>-5)&&(ypostemp<8))
+			if(((xpostemp>200)||(xpostemp<-200)||(zpostemp>200)||(zpostemp<-200))&&(ypostemp>0)&&(ypostemp<13))
 				{
 				bullets[i].WallsPrediction();			
 				}
