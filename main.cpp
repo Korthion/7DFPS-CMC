@@ -437,23 +437,22 @@ static void logic(int value)
 		xpostemp2 += float(sin(yrotrad));
 		zpostemp2 -= float(cos(yrotrad));
 
-		if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
-			{
-				if (bullet_time == true)
-				{
+		if((xpostemp2<199)&&(xpostemp2>-199))
+		{
+			if (bullet_time == true)
 				xpos += float(sin(yrotrad))/4;
-				zpos -= float(cos(yrotrad))/4;
-				}
-
-				else
-				{
+			else
 				xpos += float(sin(yrotrad))*0.8;
-				zpos -= float(cos(yrotrad))*0.8;
-				}
-			}
-		
-		//ypos -= float(sin(xrotrad));     Flying mode
 		}
+		if ((zpostemp2<199)&&(zpostemp2>-199))
+		{
+			if (bullet_time == true)
+				zpos -= float(cos(yrotrad))/4;
+			else
+				zpos -= float(cos(yrotrad))*0.8;
+		}
+		//ypos -= float(sin(xrotrad));     Flying mode
+	}
 	if(key_array['s'])
 		{
 		iswalking = true;		
@@ -466,23 +465,23 @@ static void logic(int value)
 		xpostemp2 -= float(sin(yrotrad));
 		zpostemp2 += float(cos(yrotrad));	
 
-		if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
-			{
-			if (bullet_time == true)
-				{
-				xpos -= float(sin(yrotrad))/4;
-				zpos += float(cos(yrotrad))/4;
-				}
-
-			else
-				{
-				xpos -= float(sin(yrotrad))*0.8;
-				zpos += float(cos(yrotrad))*0.8;
-				}
-			}
-		}
-	if(key_array['a'])
+		if((xpostemp2<199)&&(xpostemp2>-199))
 		{
+			if (bullet_time == true)
+				xpos -= float(sin(yrotrad))/4;
+			else
+				xpos -= float(sin(yrotrad))*0.8;
+		}
+		if((zpostemp2<199)&&(zpostemp2>-199))
+		{
+			if (bullet_time == true)
+				zpos += float(cos(yrotrad))/4;
+			else
+				zpos += float(cos(yrotrad))*0.8;
+		}
+	}
+	if(key_array['a'])
+	{
 		 iswalking = true;		
 		 glutTimerFunc(100, walk,0);  
 		 float yrotrad;
@@ -492,21 +491,21 @@ static void logic(int value)
 		 float zpostemp2=zpos;
 		 xpostemp2 -= float(cos(yrotrad)) * 0.5;
 		 zpostemp2 -= float(sin(yrotrad)) * 0.5;	
-		 if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
-			{
-				if (bullet_time == true)
-					{
-					xpos -= (float(cos(yrotrad)) * 0.5)/3;
-					zpos -= (float(sin(yrotrad)) * 0.5)/3;
-					}
-					else
-					{
-					xpos -= float(cos(yrotrad)) * 0.5;
-					zpos -= float(sin(yrotrad)) * 0.5;
-					}
-
-			 }
-		}
+		 if((xpostemp2<199)&&(xpostemp2>-199))
+		 {
+			 if (bullet_time == true)
+				 xpos -= (float(cos(yrotrad)) * 0.5)/3;
+			 else
+				 xpos -= float(cos(yrotrad)) * 0.5;
+		 }
+		 if ((zpostemp2<199)&&(zpostemp2>-199))
+		 {
+			if (bullet_time == true)
+				zpos -= (float(sin(yrotrad)) * 0.5)/3;
+			else
+				zpos -= float(sin(yrotrad)) * 0.5;
+		 }
+	 }
 	if(key_array['d'])
 		{
 		iswalking = true;		
@@ -518,21 +517,21 @@ static void logic(int value)
 		float zpostemp2=zpos;
 		xpostemp2 += float(cos(yrotrad)) * 0.5;
 		zpostemp2 += float(sin(yrotrad)) * 0.5;	
-		if((xpostemp2<199)&&(xpostemp2>-199)&&(zpostemp2<199)&&(zpostemp2>-199))
-			{
+		if((xpostemp2<199)&&(xpostemp2>-199))
+		{
 			if (bullet_time == true)
-				{
 				xpos += (float(cos(yrotrad)) * 0.5)/3;
-				zpos += (float(sin(yrotrad)) * 0.5)/3;
-				}
-				else
-				{
+			else
 				xpos += float(cos(yrotrad)) * 0.5;
-				zpos += float(sin(yrotrad)) * 0.5;
-				}
-
-			}
 		}
+		if ((zpostemp2<199)&&(zpostemp2>-199))
+		{
+			if (bullet_time == true)
+				zpos += (float(sin(yrotrad)) * 0.5)/3;
+			else				
+				zpos += float(sin(yrotrad)) * 0.5;
+		}
+	}
 
 	if((key_array['d'])&&(key_array['a']))
 		{
@@ -545,12 +544,13 @@ static void logic(int value)
 		glutTimerFunc(100, stopwalk,0);
 		}
 
-	vertex cur_position = { xpos, ypos, zpos };	
+	vertex cur_position = { xpos, ypos, old_position.z };	
 	if (CollisionDetection::checkCollision(cur_position))
-	{
 		xpos = old_position.x;
+	cur_position.x = old_position.x;
+	cur_position.z = zpos;
+	if (CollisionDetection::checkCollision(cur_position))
 		zpos = old_position.z;
-	}
 
 //	item.rot_y++;
 
