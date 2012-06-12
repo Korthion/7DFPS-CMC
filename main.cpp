@@ -15,6 +15,28 @@
 using namespace std;
 using namespace irrklang;
 
+const int ParticleCount = 500;
+GLuint particle_texture[10];
+
+typedef struct
+{
+double Xpos;
+double Ypos;
+double Zpos;
+double Xmov;
+double Zmov;
+double Red;
+double Green;
+double Blue;
+double Direction;
+double Acceleration;
+double Deceleration;
+double Scalez;
+bool Visible;
+}PARTICLES;
+
+PARTICLES Particle[ParticleCount];
+
 float lastx, lasty, xpos = 0, ypos = 7, zpos = 0, xrot = 0, yrot = 0, target_x = 170.9, acc = 0.025, speed_up, speed_dif = 1.0;
 float g_rotation = 0, g_rotation_speed = 90.0f, accuracy = 0, recoil = 0;
 const float PI = 3.141592654;
@@ -70,6 +92,119 @@ void shotfade(int a)
 void sniper_reload(int a)
 { 
    Sound.playsniper_reload();
+}
+
+void glCreateParticles (void) {
+int i;
+for (i = 1; i < ParticleCount; i++)
+{
+Particle[i].Xpos = 0;
+Particle[i].Ypos = -5;
+Particle[i].Zpos = -5;
+Particle[i].Xmov = (((((((2 - 1 + 1) * rand()%11) + 1) - 1 + 1) *
+rand()%11) + 1) * 0.005) - (((((((2 - 1 + 1) * rand()%11) + 1) - 1 + 1
+) * rand()%11) + 1) * 0.005);
+Particle[i].Zmov = (((((((2 - 1 + 1) * rand()%11) + 1) - 1 + 1) *
+rand()%11) + 1) * 0.005) - (((((((2 - 1 + 1) * rand()%11) + 1) - 1 + 1
+) * rand()%11) + 1) * 0.005);
+Particle[i].Red = 1;
+Particle[i].Green = 1;
+Particle[i].Blue = 1;
+Particle[i].Scalez = 0.25;
+Particle[i].Direction = 0;
+Particle[i].Acceleration = ((((((8 - 5 + 2) * rand()%11) + 5
+) - 1 + 1) * rand()%11) + 1) * 0.02;
+Particle[i].Deceleration = 0.0025;
+}
+}
+
+void glUpdateParticles (void) 
+{
+
+for (int i = 1; i < ParticleCount; i++)
+{
+glColor3f (Particle[i].Red, Particle[i].Green,
+Particle[i].Blue);
+
+Particle[i].Ypos = Particle[i].Ypos + Particle[i].Acceleration - Particle[i].Deceleration;
+Particle[i].Deceleration = Particle[i].Deceleration +
+0.0025;
+
+Particle[i].Xpos = Particle[i].Xpos + Particle[i].Xmov;
+Particle[i].Zpos = Particle[i].Zpos + Particle[i].Zmov;
+
+Particle[i].Direction = Particle[i].Direction + ((((((int)(0.5 - 0.1 + 0.1) * rand()%11) + 1) - 1 + 1) * rand()%11) + 1);
+
+if (Particle[i].Ypos < -5)
+{
+Particle[i].Xpos = 0;
+Particle[i].Ypos = -5;
+Particle[i].Zpos = -5;
+Particle[i].Red = 1;
+Particle[i].Green = 1;
+Particle[i].Blue = 1;
+Particle[i].Direction = 0;
+Particle[i].Acceleration = ((((((8 - 5 + 2) * rand()%11) + 5) - 1 + 1) * rand()%11) + 1) * 0.02;
+Particle[i].Deceleration = 0.0025;
+}
+
+}
+
+}
+
+void glDrawParticles (void) 
+{
+int i;
+
+for (i = 1; i < ParticleCount; i++)
+{
+glPushMatrix();
+
+    glTranslatef (Particle[i].Xpos, Particle[i].Ypos, Particle[i].Zpos);
+    glRotatef (Particle[i].Direction - 90, 0, 0, 1);
+   
+    glScalef (Particle[i].Scalez, Particle[i].Scalez, Particle[i].Scalez);
+   
+	
+    //glDisable (GL_DEPTH_TEST);
+  
+        
+    glBlendFunc (GL_DST_COLOR, GL_ZERO);
+    glBindTexture (GL_TEXTURE_2D, particle_texture[0]);
+
+    glBegin (GL_QUADS);
+    glTexCoord2d (0, 0);
+    glVertex3f (-1, -1, 0);
+    glTexCoord2d (1, 0);
+    glVertex3f (1, -1, 0);
+    glTexCoord2d (1, 1);
+    glVertex3f (1, 1, 0);
+    glTexCoord2d (0, 1);
+    glVertex3f (-1, 1, 0);
+    glEnd();
+    
+    glBlendFunc (GL_ONE, GL_ONE);
+    glBindTexture (GL_TEXTURE_2D, particle_texture[1]);
+    
+    glBegin (GL_QUADS);
+    glTexCoord2d (0, 0);
+    glVertex3f (-1, -1, 0);
+    glTexCoord2d (1, 0);
+    glVertex3f (1, -1, 0);
+    glTexCoord2d (1, 1);
+    glVertex3f (1, 1, 0);
+    glTexCoord2d (0, 1);
+    glVertex3f (-1, 1, 0);
+    glEnd();
+   	
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glEnable (GL_DEPTH_TEST);
+	
+
+glPopMatrix();
+
+}
+
 }
 
 void reload(int a)
@@ -591,7 +726,8 @@ void render(void)
 {   
     glDisable(GL_DEPTH_TEST);
     stringstream ss,ss2,ss3,ammo;
-		if (show_hud == true)
+	
+	if (show_hud == true)
 	{	
 		ss <<"X: "<<xpos<<"   "<<"Y: "<<zpos;
 		ss2<<"Total bullet Count: "<<bulletcount<<"  Accuracy: "<<accuracy<<"  Recoil:"<<recoil;
@@ -633,7 +769,9 @@ void render(void)
 	glPushMatrix();
 	glRotatef(57.5*angle,0,1,0);
 	obj[1].Draw();
-	glPopMatrix();
+	glPopMatrix();	
+
+	
 
 	for(int i=0;i<=200;i++)
     {
@@ -641,6 +779,8 @@ void render(void)
 			{bullets[i].draw(target_x);}
     }
 
+	glUpdateParticles();
+    glDrawParticles();
 
 	if ((*weapon_current).name=="M249") 
 		{
@@ -673,7 +813,8 @@ void render(void)
 		hud.outputText(-0.225,0.175, ss3.str(),1);
 		hud.outputText(-0.225,-0.1375, ammo.str(),1);
 		}
-	hud.crossair(zoomedIn);			
+
+	hud.crossair(zoomedIn);	
 	
     glutSwapBuffers(); 	
 }
@@ -1089,6 +1230,11 @@ int main (int argc, char **argv)
 	MG = texture("mg.bmp", GL_REPEAT);
 	pistol = texture("pistol.bmp", GL_CLAMP);
 	scope = texture("scope.bmp", GL_CLAMP);
+
+	glCreateParticles();
+
+    particle_texture[0] =  hud.LoadTexture("particle_mask.raw", 256, 256, GL_CLAMP); 
+    particle_texture[1] =  hud.LoadTexture("particle.raw", 256, 256, GL_CLAMP);
 
 	//Setting up the weapons
 	weapon_MG.magazine_cap = 100;

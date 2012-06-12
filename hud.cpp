@@ -146,6 +146,7 @@ void HUD::image(GLuint texture, float x, float y, float x2, float y2, bool zoome
 	glLoadIdentity();
 
 	glColor3f(1.0,1.0,1.0);
+
 	glDisable(GL_LIGHTING);
 	glEnable( GL_TEXTURE_2D );
 	//glDisable(GL_DEPTH_TEST);
